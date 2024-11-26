@@ -28,6 +28,6 @@ app.use(express.static(path.join(__dirname,"uploads")))
 
 app.use(globalError)
 app.listen(process.env.PORT,()=>{
-    console.log(`listening on port:${process.env.PORT}`)
+    console.log(`listening on port:${process.env.PORT}....`)
     connectDB();
 })

@@ -20,6 +20,6 @@ app.use("/api/rooms", room_route_1.roomRouter);
 app.use(express_1.default.static(path_1.default.join(__dirname, "uploads")));
 app.use(errorMiddleware_1.globalError);
 app.listen(process.env.PORT, () => {
-    console.log(`listening on port:${process.env.PORT}`);
+    console.log(`listening on port:${process.env.PORT}....`);
     (0, connectDb_1.connectDB)();
 });
