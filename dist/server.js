@@ -17,7 +17,7 @@ app.use(express_1.default.json());
 app.use("/api/specialfeatures", specialFeature_route_1.specialFeaturesRouter);
 app.use("/api/subjects", subject_route_1.subjectRouter);
 app.use("/api/rooms", room_route_1.roomRouter);
-app.use(express_1.default.static(path_1.default.join(__dirname, "uploads")));
+app.use(express_1.default.static(path_1.default.join(__dirname, "../uploads")));
 app.use(errorMiddleware_1.globalError);
 app.listen(process.env.PORT, () => {
     console.log(`listening on port:${process.env.PORT}....`);

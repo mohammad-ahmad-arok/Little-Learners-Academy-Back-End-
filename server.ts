@@ -24,7 +24,8 @@ app.use("/api/rooms",roomRouter)
 
 
 
-app.use(express.static(path.join(__dirname,"uploads")))
+app.use(express.static(path.join(__dirname,"../uploads")))
+
 
 app.use(globalError)
 app.listen(process.env.PORT,()=>{
