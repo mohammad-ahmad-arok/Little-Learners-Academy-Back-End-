@@ -6,6 +6,7 @@ const app=express();
 import {globalError} from "./middlewares/errorMiddleware"
 import {connectDB} from "./DB/connectDb"
 import path from "path"
+<<<<<<< HEAD
 import teamRouter from './routes/teamRoutes'; // Import your routes
 import historyRoutes from "./routes/historyRoutes";
 import awardRoutes from "./routes/awardRoutes"; 
@@ -26,6 +27,21 @@ app.use("/api/awards", awardRoutes);
 app.use("/api/mission-vision", missionVisionRoutes);
 
 app.use('/uploads/member', express.static(path.join(__dirname, 'uploads/member')));
+=======
+
+import {commonQuestionRouter} from "./routes/CommonQuestionsRoutes"
+import {TestimonialsRouter} from "./routes/TestimonialsRoutes"
+import {FeaturesRouter} from "./routes/FeaturesRoutes"
+
+app.use(express.json());
+
+app.use("/api/commonquestions",commonQuestionRouter)
+app.use("/api/testimonials",TestimonialsRouter)
+app.use("/api/features",FeaturesRouter)
+
+
+app.use(express.static(path.join(__dirname,"../uploads")))
+>>>>>>> 034a0b5f0ca3250e3789cf6cbd8e844c03ac01a2
 
 app.use(globalError)
 
