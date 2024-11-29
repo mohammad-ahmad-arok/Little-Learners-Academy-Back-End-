@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 dotenv.config();
 
 const app=express();
+
 import {globalError} from "./middlewares/errorMiddleware"
 import {connectDB} from "./DB/connectDb"
 import path from "path"
@@ -16,6 +17,9 @@ import teamRouter from './routes/teamRoutes'; // Import your routes
 import historyRoutes from "./routes/historyRoutes";
 import awardRoutes from "./routes/awardRoutes"; 
 import missionVisionRoutes from "./routes/missionVisionRoutes"; 
+import {commonQuestionRouter} from "./routes/CommonQuestionsRoutes"
+import {TestimonialsRouter} from "./routes/TestimonialsRoutes"
+import {BenefitRouter} from "./routes/BenefitRoutes"
 
 
 app.use(express.json());
@@ -26,15 +30,16 @@ app.use("/api/history", historyRoutes);
 app.use("/api/awards", awardRoutes);
 app.use("/api/mission-vision", missionVisionRoutes);
 
-app.use('/uploads/member', express.static(path.join(__dirname, 'uploads/member')));
 
 
-import {commonQuestionRouter} from "./routes/CommonQuestionsRoutes"
-import {TestimonialsRouter} from "./routes/TestimonialsRoutes"
-import {FeaturesRouter} from "./routes/FeaturesRoutes"
 
 
-app.use(express.json());
+app.use("/api/commonquestions",commonQuestionRouter)
+app.use("/api/testimonials",TestimonialsRouter)
+app.use("/api/benefits",BenefitRouter)
+
+
+
 
 
 app.use("/api/specialfeatures",specialFeaturesRouter)
@@ -43,6 +48,7 @@ app.use("/api/rooms",roomRouter)
 
 
 
+app.use('/uploads/member', express.static(path.join(__dirname, 'uploads/member')));
 
 app.use(express.static(path.join(__dirname,"../uploads")))
 

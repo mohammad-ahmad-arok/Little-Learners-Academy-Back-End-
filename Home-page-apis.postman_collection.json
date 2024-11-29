@@ -1,0 +1,477 @@
+{
+	"info": {
+		"_postman_id": "cbb02dae-af05-428b-b897-2b6ed9d94faa",
+		"name": "Home-page-apis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37422984"
+	},
+	"item": [
+		{
+			"name": "benefits",
+			"item": [
+				{
+					"name": "add benefit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Holistic Learning Approach 2",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Our curriculum focuses on nurturing cognitive, social, emotional, and physical development, ensuring a well-rounded education.\n",
+									"type": "text"
+								},
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/C:/Users/ahmad zarnikh/Downloads/Image.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/benefits",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"benefits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all benefits",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/benefits?limit=2&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"benefits"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get custom benefit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/benefits/6745eb3045aea2493ace18b1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"benefits",
+								"6745eb3045aea2493ace18b1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update benefit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "update",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "updated ",
+									"type": "text"
+								},
+								{
+									"key": "icon",
+									"type": "file",
+									"src": "/C:/Users/ahmad zarnikh/Downloads/Vector (Stroke).png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/benefits/6745eb3045aea2493ace18b1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"benefits",
+								"6745eb3045aea2493ace18b1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete benefit",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/benefits/6745e892caa2ed6a7eb9ec33",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"benefits",
+								"6745e892caa2ed6a7eb9ec33"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "testimonials",
+			"item": [
+				{
+					"name": "add testimonial",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "David 1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Choosing Little Learners Academy for my daughter was the best decision. She has thrived in their nurturing and stimulating environment.",
+									"type": "text"
+								},
+								{
+									"key": "evaluation",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/ahmad zarnikh/Downloads/Vector (Stroke).png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/testimonials",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"testimonials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all testimonials",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/testimonials?limit=2&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"testimonials"
+							],
+							"query": [
+								{
+									"key": "li",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get custom testimonial",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/testimonials/6746a4917e4a21f313ac7048",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"testimonials",
+								"6746a4917e4a21f313ac7048"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update testimonial",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "update",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "updated",
+									"type": "text"
+								},
+								{
+									"key": "evaluation",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/ahmad zarnikh/Downloads/Union.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/testimonials/6745ecd3191db5bc6f08186e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"testimonials",
+								"6745ecd3191db5bc6f08186e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete testimonial",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/testimonials/6745ed19191db5bc6f081871",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"testimonials",
+								"6745ed19191db5bc6f081871"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Common questions",
+			"item": [
+				{
+					"name": "add common question",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"question\" : \"How do you handle food allergies and dietary restrictions?\",\r\n    \"answer\" : \"Our school hours are from 8:00 AM to 3:00 PM, Monday to Friday. We also offer extended care options for parents who need early drop-off or late pick-up.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/commonquestions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"commonquestions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all common questions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/commonquestions?limit=2&page=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"commonquestions"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get custom common question",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/commonQuestions/6745ede9191db5bc6f081881",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"commonQuestions",
+								"6745ede9191db5bc6f081881"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update common question",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"question\" : \"How do you handle food allergies and dietary restrictions? updated\" ,\r\n    \"answer\" : \"Our school hours are from 8:00 AM to 3:00 PM, Monday to Friday. We also offer extended care options for parents who need early drop-off or late pick-up.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/commonQuestions/6745ede2191db5bc6f08187f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"commonQuestions",
+								"6745ede2191db5bc6f08187f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete testimonial",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/commonQuestions/6745ede2191db5bc6f08187f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"commonQuestions",
+								"6745ede2191db5bc6f08187f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
