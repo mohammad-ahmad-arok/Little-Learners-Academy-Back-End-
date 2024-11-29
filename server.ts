@@ -21,6 +21,9 @@ import {commonQuestionRouter} from "./routes/CommonQuestionsRoutes"
 import {TestimonialsRouter} from "./routes/TestimonialsRoutes"
 import {BenefitRouter} from "./routes/BenefitRoutes"
 
+import messagesRouter from "./routes/messagesRoutes";
+
+
 
 app.use(express.json());
 
@@ -45,6 +48,11 @@ app.use("/api/benefits",BenefitRouter)
 app.use("/api/specialfeatures",specialFeaturesRouter)
 app.use("/api/subjects",subjectRouter)
 app.use("/api/rooms",roomRouter)
+
+
+
+
+app.use("/api/message", messagesRouter);
 
 
 
