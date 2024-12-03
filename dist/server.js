@@ -20,6 +20,7 @@ const missionVisionRoutes_1 = __importDefault(require("./routes/missionVisionRou
 const CommonQuestionsRoutes_1 = require("./routes/CommonQuestionsRoutes");
 const TestimonialsRoutes_1 = require("./routes/TestimonialsRoutes");
 const BenefitRoutes_1 = require("./routes/BenefitRoutes");
+const messagesRoutes_1 = __importDefault(require("./routes/messagesRoutes"));
 app.use(express_1.default.json());
 app.use('/team-members', teamRoutes_1.default); // All routes in teamRouter will now be prefixed with /team-members
 app.use("/api/history", historyRoutes_1.default);
@@ -31,6 +32,7 @@ app.use("/api/benefits", BenefitRoutes_1.BenefitRouter);
 app.use("/api/specialfeatures", specialFeature_route_1.specialFeaturesRouter);
 app.use("/api/subjects", subject_route_1.subjectRouter);
 app.use("/api/rooms", room_route_1.roomRouter);
+app.use("/api/message", messagesRoutes_1.default);
 app.use('/uploads/member', express_1.default.static(path_1.default.join(__dirname, 'uploads/member')));
 app.use(express_1.default.static(path_1.default.join(__dirname, "../uploads")));
 app.use(errorMiddleware_1.globalError);

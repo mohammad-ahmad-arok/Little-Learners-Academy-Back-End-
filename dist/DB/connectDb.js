@@ -8,6 +8,6 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const connectDB = () => {
     const Url = process.env.MONGO_URL;
     mongoose_1.default.connect(Url)
-        .then(() => console.log("MongoDB Connected..."));
+        .then(() => console.log("MongoDB Connected...")).catch((err) => console.log("error", err));
 };
 exports.connectDB = connectDB;
