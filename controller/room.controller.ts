@@ -1,49 +1,50 @@
-import  {Room}  from "../model/room" ;
-import sharp  from "sharp";
+import { Room } from "../model/room";
+import sharp from "sharp";
 
-import  asyncHandler  from "express-async-handler";
+import asyncHandler from "express-async-handler";
 
-import {ApiFeatures} from "../utils/ApiFeatures"
+import { ApiFeatures } from "../utils/ApiFeatures";
 
-export const processImages = asyncHandler(async (req:any, res:any, next:any) => {
-  console.log(req.files);
-  req.body.images = [];
-  if (req.files.images) {
-    await Promise.all(
-      req.files.images.map(async (image:any, index:number) => {
-        const filename = `room-${Date.now()}-${index}.jpeg`;
-        await sharp(image.buffer)
-          .resize(400, 400)
-          .toFormat("jpeg")
-          .jpeg({quality:100})
-          .toFile(`uploads/room/${filename}`);
-        req.body.images.push(filename);
-      })
-    );
+export const processImages = asyncHandler(
+  async (req: any, res: any, next: any) => {
+    console.log(req.files);
+    req.body.images = [];
+    if (req.files.images) {
+      await Promise.all(
+        req.files.images.map(async (image: any, index: number) => {
+          const filename = `room-${Date.now()}-${index}.jpeg`;
+          await sharp(image.buffer)
+            .resize(400, 400)
+            .toFormat("jpeg")
+            .jpeg({ quality: 100 })
+            .toFile(`uploads/room/${filename}`);
+          req.body.images.push(filename);
+        })
+      );
+    }
+    next();
   }
-  next();
-});
+);
 
-export const getAllRooms = asyncHandler(async (req:any, res:any) => {
+export const getAllRooms = asyncHandler(async (req: any, res: any) => {
   const countDocuments = await Room.countDocuments();
-  const feature=new ApiFeatures(Room.find({}),req.query);
+  const feature = new ApiFeatures(Room.find({}), req.query);
 
   feature.Paginate(countDocuments).Filter();
 
-  const{mongooseQuery,pagination}= feature;
-  
-  const rooms=await mongooseQuery;
+  const { mongooseQuery, pagination } = feature;
 
+  const rooms = await mongooseQuery;
 
-  res.status(200).json({ status: "Success",pagination, data: rooms });
+  res.status(200).json({ status: "Success", pagination, data: rooms });
 });
 
-export const createRoom = asyncHandler(async (req:any, res:any) => {
+export const createRoom = asyncHandler(async (req: any, res: any) => {
   const room = await Room.create(req.body);
   res.status(201).json({ status: "Success", data: room });
 });
 
-export const getRoom = asyncHandler(async (req:any, res:any) => {
+export const getRoom = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
   const room = await Room.findById(id);
   if (!room) {
@@ -52,7 +53,7 @@ export const getRoom = asyncHandler(async (req:any, res:any) => {
   res.status(200).json({ status: "Success", data: room });
 });
 
-export const updateRoom = asyncHandler(async (req:any, res:any) => {
+export const updateRoom = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
   const room = await Room.findByIdAndUpdate(id, req.body, { new: true });
   if (!room) {
@@ -61,7 +62,7 @@ export const updateRoom = asyncHandler(async (req:any, res:any) => {
   res.status(200).json({ status: "Success", data: room });
 });
 
-export const deleteRoom = asyncHandler(async (req:any, res:any) => {
+export const deleteRoom = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
   const room = await Room.findByIdAndDelete(id);
   if (!room) {
