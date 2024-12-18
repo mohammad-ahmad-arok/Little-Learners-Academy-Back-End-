@@ -13,6 +13,9 @@ import  {specialFeaturesRouter} from "./routes/specialFeature.route"
 import {subjectRouter} from "./routes/subject.route"
 import {roomRouter} from "./routes/room.route"
 
+import  {activitiesRouter} from "./routes/activities"
+import {eventsRouter} from "./routes/events"
+
 import teamRouter from './routes/teamRoutes'; // Import your routes
 import historyRoutes from "./routes/historyRoutes";
 import awardRoutes from "./routes/awardRoutes"; 
@@ -52,6 +55,8 @@ app.use("/api/specialfeatures",specialFeaturesRouter)
 app.use("/api/subjects",subjectRouter)
 app.use("/api/rooms",roomRouter)
 
+app.use("/api/activities",activitiesRouter)
+app.use("/api/events",eventsRouter)
 
 
 
