@@ -15,10 +15,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "concurrently \"tsc --watch\" \"nodemon dist/server.js\"",
     "build": "tsc -p .",
-    "start": "concurrently \"tsc \" \"node dist/server.js\"",
-    "dev":"ts-node-dev --respawn server.ts"
+    "watch":"ts-node-dev --respawn server.ts"
   },
   "author": "",
   "license": "ISC",

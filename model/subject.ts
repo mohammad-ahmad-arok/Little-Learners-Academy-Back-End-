@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 interface Sub{
     name:String,
@@ -6,7 +6,7 @@ interface Sub{
     image:String
 }
 
-const subjectSchema=new mongoose.Schema({
+const subjectSchema:Schema=new mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -47,4 +47,4 @@ subjectSchema.post("init",function(doc:Sub){
 });
 
 
-export const Subject=mongoose.model('Subject',subjectSchema);
+export const Subject=mongoose.model<Sub>('Subject',subjectSchema);
