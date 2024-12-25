@@ -37,20 +37,14 @@ exports.createTestimonial = (0, express_async_handler_1.default)((req, res, next
         name: req.body.name,
         description: req.body.description,
         evaluation: req.body.evaluation,
-        image: `http://localhost:5000/${req.file.filename}`
+        image: `http://localhost:5000/Testimonial/${req.file.filename}`
     });
     yield testimonial.save();
     res.status(201).json(testimonial);
 }));
 exports.updateTestimonial = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const testimonial = yield Testimonial_1.Testimonial.findByIdAndUpdate(req.params.id, {
-        name: req.body.name,
-        description: req.body.description,
-        evaluation: req.body.evaluation,
-        image: `http://localhost:5000/${req.file.filename}`
-    }, {
+    const testimonial = yield Testimonial_1.Testimonial.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
-        runValidators: true,
     });
     if (!testimonial) {
         return res.status(404).json({ message: "testimonial not found" });

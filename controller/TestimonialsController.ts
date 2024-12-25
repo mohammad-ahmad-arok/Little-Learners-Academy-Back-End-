@@ -43,7 +43,7 @@ export const createTestimonial=expressAsyncHandler( async (req:any, res:any,next
         name: req.body.name,
         description: req.body.description,
         evaluation : req.body.evaluation,
-        image : `http://localhost:5000/${req.file.filename}`
+        image : `http://localhost:5000/Testimonial/${req.file.filename}`
       });
   
       await testimonial.save();
@@ -55,15 +55,9 @@ export const createTestimonial=expressAsyncHandler( async (req:any, res:any,next
 export const updateTestimonial=expressAsyncHandler( async (req:any, res:any) => {
     const testimonial = await Testimonial.findByIdAndUpdate(
       req.params.id,
-      {
-          name: req.body.name,
-          description: req.body.description,
-          evaluation : req.body.evaluation,
-          image : `http://localhost:5000/${req.file.filename}`
-        },
+        req.body,
       {
         new: true,
-        runValidators: true,
       }
     );
 
