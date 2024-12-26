@@ -41,6 +41,9 @@ export const getSubject=asyncHandler(async (req:any,res:any)=>{
 
 export const updateSubject=asyncHandler(async (req:any,res:any)=>{
     const {id}=req.params;
+    if(req.file){
+        req.body.image=req.file.filename;
+    }
     const subject=await Subject.findByIdAndUpdate(id,req.body,{new:true});
     if(!subject){
         return res.status(404).json({status:"fail",message:"subject not found"});

@@ -50,6 +50,6 @@ specialFeaturesRouter
   specialFeaturesRouter
   .route("/:id")
   .get(getFeatureValidator, getFeature)
-  .put(updateFeatureValidator, updateFeature)
+  .put(upload.single("image"),updateFeatureValidator, updateFeature)
   .delete(deleteFeatureValidator, deleteFeature);
 

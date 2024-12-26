@@ -27,4 +27,20 @@ const testimonialSchema = new mongoose.Schema<TestimonialDocument>(
   { timestamps: true }
 );
 
+const setImageUrl=function(doc:TestimonialDocument){
+  if(doc.image){
+      const imageUrl=`${process.env.BASE_URL}/Testimonial/${doc.image}`;
+      doc.image=imageUrl
+    }
+}
+
+
+testimonialSchema.post("save",function(doc:TestimonialDocument){
+  setImageUrl(doc)
+});
+
+testimonialSchema.post("init",function(doc:TestimonialDocument){
+  setImageUrl(doc)
+});
+
 export const Testimonial = mongoose.model("Testimonial", testimonialSchema);

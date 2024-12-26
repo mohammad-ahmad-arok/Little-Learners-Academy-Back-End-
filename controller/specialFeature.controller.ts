@@ -42,6 +42,9 @@ export const getFeature=asyncHandler(async (req:any,res:any)=>{
 
 export const updateFeature=asyncHandler(async (req:any,res:any)=>{
     const {id}=req.params;
+    if(req.file){
+        req.body.image=req.file.filename;
+    }
     const feature=await SpecialFeature.findByIdAndUpdate(id,req.body,{new:true});
     if(!feature){
         return res.status(404).json({status:"fail",message:"Feature not found"});
