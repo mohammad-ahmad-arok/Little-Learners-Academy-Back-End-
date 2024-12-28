@@ -6,7 +6,7 @@ interface TestimonialDocument extends mongoose.Document {
   image: string;
   evaluation: number;
 }
-const testimonialSchema = new mongoose.Schema<TestimonialDocument>(
+const testimonialSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -43,4 +43,4 @@ testimonialSchema.post("init",function(doc:TestimonialDocument){
   setImageUrl(doc)
 });
 
-export const Testimonial = mongoose.model("Testimonial", testimonialSchema);
+export const Testimonial = mongoose.model<TestimonialDocument>("Testimonial", testimonialSchema);
