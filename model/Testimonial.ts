@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 interface TestimonialDocument {
   name: string;
@@ -6,7 +6,7 @@ interface TestimonialDocument {
   image: string;
   evaluation: number;
 }
-const testimonialSchema = new mongoose.Schema(
+const testimonialSchema:Schema = new mongoose.Schema(
   {
     name: {
       type: String,
