@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 interface Special {
    name:String,
@@ -6,7 +6,7 @@ interface Special {
    image:String
 }
 
-const specialFeatureSchema=new mongoose.Schema({
+const specialFeatureSchema:Schema=new mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -47,4 +47,4 @@ specialFeatureSchema.post("init",function(doc:Special){
 
 
 
-export const SpecialFeature=mongoose.model('Feature',specialFeatureSchema);
+export const SpecialFeature=mongoose.model<Special>('Feature',specialFeatureSchema);

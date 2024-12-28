@@ -26,7 +26,10 @@ const messagesRoutes_1 = __importDefault(require("./routes/messagesRoutes"));
 const cors_1 = __importDefault(require("cors"));
 const ServicesRoutes_1 = __importDefault(require("./routes/ServicesRoutes")); // Routes for admission process, fee structure, and additional services
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "*",
+    methods: ["GET", "POST", "DELETE", "PUT"],
+}));
 app.use('/team-members', teamRoutes_1.default); // All routes in teamRouter will now be prefixed with /team-members
 app.use("/api/history", historyRoutes_1.default);
 app.use("/api/awards", awardRoutes_1.default);

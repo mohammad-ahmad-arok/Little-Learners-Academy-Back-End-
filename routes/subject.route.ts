@@ -51,7 +51,7 @@ subjectRouter
   subjectRouter
   .route("/:id")
   .get(getSubjectValidator, getSubject)
-  .put(updateSubjectValidator, updateSubject)
+  .put(upload.single("image"),updateSubjectValidator, updateSubject)
   .delete(deleteSubjectValidator, deleteSubject);
 
 

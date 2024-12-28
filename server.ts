@@ -32,9 +32,13 @@ import generalRoutes from './routes/ServicesRoutes'; // Routes for admission pro
 
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+    origin:"*",
+    methods:["GET","POST","DELETE","PUT"],
+}))
 
-app.use('/team-members', teamRouter); // All routes in teamRouter will now be prefixed with /team-members
+
+app.use('/api/team-members', teamRouter); // All routes in teamRouter will now be prefixed with /team-members
 app.use("/api/history", historyRoutes);
 app.use("/api/awards", awardRoutes);
 app.use("/api/mission-vision", missionVisionRoutes);
@@ -68,7 +72,7 @@ app.use('/uploads/member', express.static(path.join(__dirname, 'uploads/member')
 
 app.use('/api/general', generalRoutes);
 
-app.use(express.static(path.join(__dirname,"../uploads")))
+app.use(express.static(path.join(__dirname,"/uploads")))
 
 
 app.use(globalError)

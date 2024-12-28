@@ -29,6 +29,9 @@ const specialFeatureSchema = new mongoose_1.default.Schema({
 // })
 const setImageUrl = function (doc) {
     if (doc.image) {
+        // console.log(doc.image)
+        const image = doc.image.split("\\\\");
+        console.log(image[4]);
         const imageUrl = `${process.env.BASE_URL}/specialFeature/${doc.image}`;
         doc.image = imageUrl;
     }
