@@ -29,10 +29,6 @@ const setImageUrl = function (doc) {
         doc.image = imageUrl;
     }
 };
-// subjectSchema.pre(/^find/, function(next){
-//    this.select("-__v");
-//    next();
-// })
 subjectSchema.post("save", function (doc) {
     setImageUrl(doc);
 });

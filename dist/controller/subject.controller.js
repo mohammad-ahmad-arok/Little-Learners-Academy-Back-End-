@@ -42,6 +42,9 @@ exports.getSubject = (0, express_async_handler_1.default)((req, res) => __awaite
 }));
 exports.updateSubject = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    if (req.file) {
+        req.body.image = req.file.filename;
+    }
     const subject = yield subject_1.Subject.findByIdAndUpdate(id, req.body, { new: true });
     if (!subject) {
         return res.status(404).json({ status: "fail", message: "subject not found" });

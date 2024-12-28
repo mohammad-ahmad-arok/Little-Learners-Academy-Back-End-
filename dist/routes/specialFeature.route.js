@@ -36,5 +36,5 @@ exports.specialFeaturesRouter
 exports.specialFeaturesRouter
     .route("/:id")
     .get(specialFeatureValidator_1.getFeatureValidator, specialFeature_controller_1.getFeature)
-    .put(specialFeatureValidator_1.updateFeatureValidator, specialFeature_controller_1.updateFeature)
+    .put(upload.single("image"), specialFeatureValidator_1.updateFeatureValidator, specialFeature_controller_1.updateFeature)
     .delete(specialFeatureValidator_1.deleteFeatureValidator, specialFeature_controller_1.deleteFeature);

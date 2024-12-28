@@ -33,16 +33,17 @@ exports.getTestimonial = (0, express_async_handler_1.default)((req, res) => __aw
     res.status(200).json(testimonial);
 }));
 exports.createTestimonial = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const testimonial = new Testimonial_1.Testimonial({
-        name: req.body.name,
-        description: req.body.description,
-        evaluation: req.body.evaluation,
-        image: `http://localhost:5000/Testimonial/${req.file.filename}`
-    });
-    yield testimonial.save();
+    const testimonial = yield Testimonial_1.Testimonial.create(req.body);
+    if (req.file) {
+        testimonial.image = req.file.filename;
+        yield testimonial.save();
+    }
     res.status(201).json(testimonial);
 }));
 exports.updateTestimonial = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (req.file) {
+        req.body.image = req.file.filename;
+    }
     const testimonial = yield Testimonial_1.Testimonial.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
     });

@@ -30,7 +30,7 @@ app.use((0, cors_1.default)({
     origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT"],
 }));
-app.use('/team-members', teamRoutes_1.default); // All routes in teamRouter will now be prefixed with /team-members
+app.use('/api/team-members', teamRoutes_1.default); // All routes in teamRouter will now be prefixed with /team-members
 app.use("/api/history", historyRoutes_1.default);
 app.use("/api/awards", awardRoutes_1.default);
 app.use("/api/mission-vision", missionVisionRoutes_1.default);
@@ -45,7 +45,7 @@ app.use("/api/events", events_1.eventsRouter);
 app.use("/api/message", messagesRoutes_1.default);
 app.use('/uploads/member', express_1.default.static(path_1.default.join(__dirname, 'uploads/member')));
 app.use('/api/general', ServicesRoutes_1.default);
-app.use(express_1.default.static(path_1.default.join(__dirname, "../uploads")));
+app.use(express_1.default.static(path_1.default.join(__dirname, "/uploads")));
 app.use(errorMiddleware_1.globalError);
 app.listen(process.env.PORT, () => {
     console.log(`listening on port:${process.env.PORT}....`);

@@ -28,6 +28,7 @@ exports.createFeature = (0, express_async_handler_1.default)((req, res) => __awa
     const feature = yield specialFeature_1.SpecialFeature.create(req.body);
     if (req.file) {
         feature.image = req.file.filename;
+        console.log(req.file);
         yield feature.save();
     }
     res.status(201).json({ status: "Success", data: feature });
@@ -42,6 +43,9 @@ exports.getFeature = (0, express_async_handler_1.default)((req, res) => __awaite
 }));
 exports.updateFeature = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    if (req.file) {
+        req.body.image = req.file.filename;
+    }
     const feature = yield specialFeature_1.SpecialFeature.findByIdAndUpdate(id, req.body, { new: true });
     if (!feature) {
         return res.status(404).json({ status: "fail", message: "Feature not found" });
