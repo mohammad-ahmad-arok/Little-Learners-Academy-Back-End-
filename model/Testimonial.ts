@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface TestimonialDocument extends mongoose.Document {
+interface TestimonialDocument {
   name: string;
   description: string;
   image: string;
