@@ -98,7 +98,7 @@ export const updateTeamMember = async (req: Request, res: Response): Promise<voi
 
     await existingTeamMember.save();
 
-    res.status(200).json(existingTeamMember,photoUrl);
+    res.status(200).json({existingTeamMember,photoUrl});
   } catch (error) {
     res.status(500).json({ message: 'Error updating team member', error });
   }
