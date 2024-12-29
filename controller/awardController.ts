@@ -49,7 +49,7 @@ export const createAward = async (req: Request, res: Response): Promise<void> =>
       icon,
     });
 
-    const iconUrl = `${process.env.BASE_URL}/uploads/member/${icon}`;
+    const iconUrl = `${process.env.BASE_URL}/member/${icon}`;
     res.status(201).json({
       message: 'Award created successfully!',
       data: {
@@ -67,27 +67,29 @@ export const updateAward = async (req: Request, res: Response): Promise<void> =>
   try {
     const { id } = req.params;
     const { title, description } = req.body;
-
+    
     const existingAward = await Award.findById(id);
     if (!existingAward) {
       res.status(404).json({ message: ' Award not found' });
       return;
     }
-
+    
     const icon = req.file ? req.file.filename : existingAward.icon;
-
+    
     if (req.file && existingAward.icon) {
       const oldPhotoPath = path.join('uploads/member', existingAward.icon);
       if (fs.existsSync(oldPhotoPath)) fs.unlinkSync(oldPhotoPath);
     }
-
+    
     existingAward.title = title;
     existingAward.description = description;
     existingAward.icon = icon;
-
+    
     await existingAward.save();
 
-    res.status(200).json(existingAward);
+    const iconUrl = `${process.env.BASE_URL}/member/${icon}`;
+    
+    res.status(200).json({data:{existingAward,iconUrl}});
   } catch (error) {
     res.status(500).json({ message: "Error updating award", error });
   }

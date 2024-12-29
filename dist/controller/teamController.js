@@ -95,7 +95,7 @@ const updateTeamMember = (req, res) => __awaiter(void 0, void 0, void 0, functio
         existingTeamMember.photo = photo;
         const photoUrl = `${process.env.BASE_URL}/member/${photo}`;
         yield existingTeamMember.save();
-        res.status(200).json({ existingTeamMember, photoUrl });
+        res.status(200).json({ data: { existingTeamMember, photoUrl } });
     }
     catch (error) {
         res.status(500).json({ message: 'Error updating team member', error });

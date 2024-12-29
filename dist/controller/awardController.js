@@ -59,7 +59,7 @@ const createAward = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             description,
             icon,
         });
-        const iconUrl = `${process.env.BASE_URL}/uploads/member/${icon}`;
+        const iconUrl = `${process.env.BASE_URL}/member/${icon}`;
         res.status(201).json({
             message: 'Award created successfully!',
             data: Object.assign(Object.assign({}, newAward.toObject()), { icon: iconUrl }),
@@ -90,7 +90,8 @@ const updateAward = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         existingAward.description = description;
         existingAward.icon = icon;
         yield existingAward.save();
-        res.status(200).json(existingAward);
+        const iconUrl = `${process.env.BASE_URL}/member/${icon}`;
+        res.status(200).json({ data: { existingAward, iconUrl } });
     }
     catch (error) {
         res.status(500).json({ message: "Error updating award", error });
