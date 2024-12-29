@@ -18,7 +18,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p .",
     "watch": "ts-node-dev --respawn server.ts",
-    "start": "nodemon dist/server.js",
+    "start": "node dist/server.js",
     "seed": "ts-node ./seeder.ts"
   },
   "author": "",
