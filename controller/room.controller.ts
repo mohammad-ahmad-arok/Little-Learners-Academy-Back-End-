@@ -36,7 +36,7 @@ export const getAllRooms = asyncHandler(async (req: any, res: any) => {
 
   const rooms = await mongooseQuery;
 
-  res.status(200).json({ status: "ok", pagination, data: rooms });
+  res.status(200).json({ status: "Success", pagination, data: rooms });
 });
 
 export const createRoom = asyncHandler(async (req: any, res: any) => {
