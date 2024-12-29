@@ -60,7 +60,7 @@ const createTeamMember = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             email,
             photo,
         });
-        const photoUrl = `${process.env.BASE_URL}/uploads/member/${photo}`;
+        const photoUrl = `${process.env.BASE_URL}/member/${photo}`;
         res.status(201).json({
             message: 'Team member created successfully!',
             data: Object.assign(Object.assign({}, newMember.toObject()), { photo: photoUrl }),
