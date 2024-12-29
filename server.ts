@@ -72,7 +72,7 @@ app.use('/uploads/member', express.static(path.join(__dirname, 'uploads/member')
 
 app.use('/api/general', generalRoutes);
 
-app.use(express.static(path.join(__dirname,"/uploads")))
+app.use(express.static(path.join(__dirname,"../uploads")))
 
 
 app.use(globalError)
