@@ -43,7 +43,7 @@ app.use("/api/rooms", room_route_1.roomRouter);
 app.use("/api/activities", activities_1.activitiesRouter);
 app.use("/api/events", events_1.eventsRouter);
 app.use("/api/message", messagesRoutes_1.default);
-app.use('/uploads/member', express_1.default.static(path_1.default.join(__dirname, 'uploads/member')));
+// app.use('/uploads/member', express.static(path.join(__dirname, '../uploads/member')));
 app.use(express_1.default.static(path_1.default.join(__dirname, "../uploads")));
 app.use('/api/general', ServicesRoutes_1.default);
 app.use(errorMiddleware_1.globalError);
