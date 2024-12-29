@@ -67,9 +67,9 @@ app.use("/api/events",eventsRouter)
 app.use("/api/message", messagesRouter);
 
 
-// app.use(express.static(path.join(__dirname,"uploads")))
+app.use(express.static(path.join(__dirname,"../uploads")))
 
-app.use('/uploads/member', express.static(path.join(__dirname, 'uploads/member')));
+// app.use('/uploads/member', express.static(path.join(__dirname, 'uploads/member')));
 
 app.use('/api/general', generalRoutes);
 
