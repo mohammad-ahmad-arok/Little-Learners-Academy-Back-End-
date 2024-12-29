@@ -73,29 +73,32 @@ export const updateTeamMember = async (req: Request, res: Response): Promise<voi
   try {
     const { id } = req.params;
     const { name, qualification, description, email } = req.body;
-
+    
     const existingTeamMember = await TeamMember.findById(id);
     if (!existingTeamMember) {
       res.status(404).json({ message: 'Team member not found' });
       return;
     }
-
+    
     const photo = req.file ? req.file.filename : existingTeamMember.photo;
-
+    
     if (req.file && existingTeamMember.photo) {
       const oldPhotoPath = path.join('uploads/member', existingTeamMember.photo);
       if (fs.existsSync(oldPhotoPath)) fs.unlinkSync(oldPhotoPath);
     }
-
+    
     existingTeamMember.name = name;
     existingTeamMember.qualification = qualification;
     existingTeamMember.description = description;
     existingTeamMember.email = email;
     existingTeamMember.photo = photo;
+    
+    const photoUrl = `${process.env.BASE_URL}/member/${photo}`;
+    
 
     await existingTeamMember.save();
 
-    res.status(200).json(existingTeamMember);
+    res.status(200).json(existingTeamMember,photoUrl);
   } catch (error) {
     res.status(500).json({ message: 'Error updating team member', error });
   }
