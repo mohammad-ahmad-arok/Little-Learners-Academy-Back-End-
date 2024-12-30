@@ -37,34 +37,24 @@ app.use(cors({
     methods:["GET","POST","DELETE","PUT"],
 }))
 
-
-app.use('/api/team-members', teamRouter); // All routes in teamRouter will now be prefixed with /team-members
+// All routes in teamRouter will now be prefixed with /team-members
+app.use('/api/team-members', teamRouter);
 app.use("/api/history", historyRoutes);
 app.use("/api/awards", awardRoutes);
 app.use("/api/mission-vision", missionVisionRoutes);
-
-
-
-
-
 app.use("/api/commonquestions",commonQuestionRouter)
 app.use("/api/testimonials",TestimonialsRouter)
 app.use("/api/benefits",BenefitRouter)
-
-
-
-
-
 app.use("/api/specialfeatures",specialFeaturesRouter)
 app.use("/api/subjects",subjectRouter)
 app.use("/api/rooms",roomRouter)
-
 app.use("/api/activities",activitiesRouter)
 app.use("/api/events",eventsRouter)
-
-
-
 app.use("/api/message", messagesRouter);
+app.use('/api/general', generalRoutes);
+
+
+
 
 
 
@@ -72,7 +62,6 @@ app.use("/api/message", messagesRouter);
 
 app.use(express.static(path.join(__dirname,"../uploads")))
 
-app.use('/api/general', generalRoutes);
 
 
 
