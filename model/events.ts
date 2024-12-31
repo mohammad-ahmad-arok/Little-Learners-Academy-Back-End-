@@ -27,21 +27,21 @@ const eventSchema=new mongoose.Schema({
 },{timestamps:true})
 
 
-const setImageUrl=async function(doc:Sub){
-    if(doc.image){
-        const imageUrl=await uploadImage(`./uploads/events/${doc.image}`);
-        doc.image=imageUrl
-      }
-}
+// const setImageUrl=async function(doc:Sub){
+//     if(doc.image){
+//         const imageUrl=await uploadImage(`./uploads/events/${doc.image}`);
+//         doc.image=imageUrl
+//       }
+// }
 
 
-eventSchema.post("save",async function(doc:Sub){
-    await setImageUrl(doc)
-});
+// eventSchema.post("save",async function(doc:Sub){
+//     await setImageUrl(doc)
+// });
 
-eventSchema.post("init",async function(doc:Sub){
-   await  setImageUrl(doc)
-});
+// eventSchema.post("init",async function(doc:Sub){
+//    await  setImageUrl(doc)
+// });
 
 
 export const event=mongoose.model('Event',eventSchema);

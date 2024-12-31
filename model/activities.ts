@@ -27,20 +27,20 @@ const activitiesSchema=new mongoose.Schema({
 },{timestamps:true})
 
 
-const setImageUrl=async function(doc:Special){
-    if(doc.image){
-        const imageUrl=await uploadImage(`./uploads/activities/${doc.image}`);
-        doc.image=imageUrl
-      }
-}
+// const setImageUrl=async function(doc:Special){
+//     if(doc.image){
+//         const imageUrl=await uploadImage(`./uploads/activities/${doc.image}`);
+//         doc.image=imageUrl
+//       }
+// }
 
-activitiesSchema.post("save",async function(doc:Special){
-  await  setImageUrl(doc)
-});
+// activitiesSchema.post("save",async function(doc:Special){
+//   await  setImageUrl(doc)
+// });
 
-activitiesSchema.post("init",async function(doc:Special){
-   await  setImageUrl(doc)
-});
+// activitiesSchema.post("init",async function(doc:Special){
+//    await  setImageUrl(doc)
+// });
 
 
 

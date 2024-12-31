@@ -21,21 +21,21 @@ const teamMemberSchema = new Schema<IMember>(
   { timestamps: true }
 );
 
-const setImageUrl=async function(doc:IMember){
-    if(doc.photo){
-        const imageUrl=await uploadImage(`./uploads/subject/${doc.photo}`);
-        doc.photo=imageUrl
-      }
-}
+// const setImageUrl=async function(doc:IMember){
+//     if(doc.photo){
+//         const imageUrl=await uploadImage(`./uploads/subject/${doc.photo}`);
+//         doc.photo=imageUrl
+//       }
+// }
 
 
-teamMemberSchema.post("save",async function(doc:IMember){
-     await setImageUrl(doc)
-});
+// teamMemberSchema.post("save",async function(doc:IMember){
+//      await setImageUrl(doc)
+// });
 
-teamMemberSchema.post("init",async function(doc:IMember){
-   await  setImageUrl(doc)
-});
+// teamMemberSchema.post("init",async function(doc:IMember){
+//    await  setImageUrl(doc)
+// });
 
 // TeamMember model
 const TeamMember = model('TeamMember', teamMemberSchema);

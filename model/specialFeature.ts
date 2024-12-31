@@ -31,20 +31,20 @@ const specialFeatureSchema:Schema=new mongoose.Schema({
 //    next();
 // })
 
-const setImageUrl=async function(doc:Special){
-    if(doc.image){
-        const imageUrl=await uploadImage(`./uploads/specialFeature/${doc.image}`);
-        doc.image=imageUrl
-      }
-}
+// const setImageUrl=async function(doc:Special){
+//     if(doc.image){
+//         const imageUrl=await uploadImage(`./uploads/specialFeature/${doc.image}`);
+//         doc.image=imageUrl
+//       }
+// }
 
-specialFeatureSchema.post("save",async function(doc:Special){
-    await setImageUrl(doc)
-});
+// specialFeatureSchema.post("save",async function(doc:Special){
+//     await setImageUrl(doc)
+// });
 
-specialFeatureSchema.post("init",async function(doc:Special){
-   await setImageUrl(doc)
-});
+// specialFeatureSchema.post("init",async function(doc:Special){
+//    await setImageUrl(doc)
+// });
 
 
 

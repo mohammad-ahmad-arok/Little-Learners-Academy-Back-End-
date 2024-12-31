@@ -29,7 +29,7 @@ exports.processImages = (0, express_async_handler_1.default)((req, res, next) =>
                 .toFormat("jpeg")
                 .jpeg({ quality: 100 })
                 .toFile(`uploads/room/${filename}`);
-            const imageUrl = yield (0, uploadImage_1.uploadImage)(image.path);
+            const imageUrl = yield (0, uploadImage_1.uploadImage)(`./uploads/room/${filename}`);
             req.body.images.push(imageUrl);
         })));
     }

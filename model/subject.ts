@@ -27,21 +27,21 @@ const subjectSchema:Schema=new mongoose.Schema({
 },{timestamps:true})
 
 
-const setImageUrl=async function(doc:Sub){
-    if(doc.image){
-        const imageUrl=await uploadImage(`./uploads/subject/${doc.image}`);
-        doc.image=imageUrl
-      }
-}
+// const setImageUrl=async function(doc:Sub){
+//     if(doc.image){
+//         const imageUrl=await uploadImage(`./uploads/subject/${doc.image}`);
+//         doc.image=imageUrl
+//       }
+// }
 
 
-subjectSchema.post("save",async function(doc:Sub){
-     await setImageUrl(doc)
-});
+// subjectSchema.post("save",async function(doc:Sub){
+//      await setImageUrl(doc)
+// });
 
-subjectSchema.post("init",async function(doc:Sub){
-   await  setImageUrl(doc)
-});
+// subjectSchema.post("init",async function(doc:Sub){
+//    await  setImageUrl(doc)
+// });
 
 
 export const Subject=mongoose.model<Sub>('Subject',subjectSchema);

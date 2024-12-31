@@ -19,7 +19,7 @@ export const processImages = asyncHandler(
             .toFormat("jpeg")
             .jpeg({ quality: 100 })
             .toFile(`uploads/room/${filename}`);
-          const imageUrl=await uploadImage(image.path)
+          const imageUrl=await uploadImage(`./uploads/room/${filename}`)
           req.body.images.push(imageUrl);
         })
       );
