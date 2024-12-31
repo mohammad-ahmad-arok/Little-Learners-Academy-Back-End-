@@ -32,11 +32,11 @@ const setImagesUrl=async function(doc:Iroom) {
     
     let images:Array<String>=[]
     if(doc.images){
-        doc.images.forEach(async image=>{
-            const imageUrl =await uploadImage(`./uploads/room/${image}`);
-            images.push(imageUrl);
-        })
-        doc.images=images
+       for(let image in doc.images){
+         const imageUrl=await uploadImage(`./uploads/room/${doc.images[image]}`);
+         images.push(imageUrl);
+       }
+       doc.images=images;
       }
 }
 

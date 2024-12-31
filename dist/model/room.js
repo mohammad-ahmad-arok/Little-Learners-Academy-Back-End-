@@ -35,10 +35,10 @@ const setImagesUrl = function (doc) {
     return __awaiter(this, void 0, void 0, function* () {
         let images = [];
         if (doc.images) {
-            doc.images.forEach((image) => __awaiter(this, void 0, void 0, function* () {
-                const imageUrl = yield (0, uploadImage_1.uploadImage)(`./uploads/room/${image}`);
+            for (let image in doc.images) {
+                const imageUrl = yield (0, uploadImage_1.uploadImage)(`./uploads/room/${doc.images[image]}`);
                 images.push(imageUrl);
-            }));
+            }
             doc.images = images;
         }
     });
