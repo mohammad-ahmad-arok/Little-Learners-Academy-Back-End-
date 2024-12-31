@@ -16,6 +16,7 @@ exports.deleteTestimonial = exports.updateTestimonial = exports.createTestimonia
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const Testimonial_1 = require("../model/Testimonial");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
+const uploadImage_1 = require("../utils/uploadImage");
 exports.getTestimonials = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocument = yield Testimonial_1.Testimonial.countDocuments();
     const feature = new ApiFeatures_1.ApiFeatures(Testimonial_1.Testimonial.find(), req.query);
@@ -35,14 +36,14 @@ exports.getTestimonial = (0, express_async_handler_1.default)((req, res) => __aw
 exports.createTestimonial = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const testimonial = yield Testimonial_1.Testimonial.create(req.body);
     if (req.file) {
-        testimonial.image = req.file.filename;
+        testimonial.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
         yield testimonial.save();
     }
     res.status(201).json(testimonial);
 }));
 exports.updateTestimonial = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.file) {
-        req.body.image = req.file.filename;
+        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
     }
     const testimonial = yield Testimonial_1.Testimonial.findByIdAndUpdate(req.params.id, req.body, {
         new: true,

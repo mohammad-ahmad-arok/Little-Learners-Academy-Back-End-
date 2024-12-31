@@ -4,6 +4,7 @@ import  {ApiFeatures} from "../utils/ApiFeatures"
 
 
 import  asyncHandler from "express-async-handler"
+import { uploadImage } from "../utils/uploadImage";
 
 export const getAllActivities=asyncHandler(async (req:any,res:any)=>{
     const countDocument=await activities.countDocuments();
@@ -23,7 +24,7 @@ export const getAllActivities=asyncHandler(async (req:any,res:any)=>{
 export const createActivity=asyncHandler(async (req:any,res:any)=>{
     const Activity=await activities.create(req.body);
     if(req.file){
-        Activity.image=req.file.filename;
+        Activity.image=await uploadImage(req.file.path);
         await Activity.save();
     }
     res.status(201).json({status:"Success",data:Activity});
@@ -41,6 +42,9 @@ export const getActivity=asyncHandler(async (req:any,res:any)=>{
 
 export const updateActivity=asyncHandler(async (req:any,res:any)=>{
     const {id}=req.params;
+    if(req.file){
+        req.body.image=await uploadImage(req.file.path);
+    }
     const Activity=await activities.findByIdAndUpdate(id,req.body,{new:true});
     if(!Activity){
         return res.status(404).json({status:"fail",message:"Feature not found"});

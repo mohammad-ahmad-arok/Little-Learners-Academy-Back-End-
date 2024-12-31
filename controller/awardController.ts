@@ -45,7 +45,7 @@ export const createAward = async (req: Request, res: Response): Promise<void> =>
        const newAward = await Award.create(req.body);
 
     if(req.file){
-      newAward.icon=req.file.filename;
+      newAward.icon=await uploadImage(req.file.path);
       await newAward.save();
     }
 
@@ -65,7 +65,7 @@ export const updateAward = async (req: Request, res: Response): Promise<void> =>
     const { id } = req.params;
     
     if(req.file){
-      req.body.icon =req.file.filename;
+      req.body.icon =await uploadImage(req.file.path);
     }
     const existingAward = await Award.findByIdAndUpdate(id,req.body,{new:true});
     if (!existingAward) {

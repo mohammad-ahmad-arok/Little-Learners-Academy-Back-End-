@@ -4,6 +4,7 @@ import sharp from "sharp";
 import asyncHandler from "express-async-handler";
 
 import { ApiFeatures } from "../utils/ApiFeatures";
+import { uploadImage } from "../utils/uploadImage";
 
 export const processImages = asyncHandler(
   async (req: any, res: any, next: any) => {
@@ -18,7 +19,8 @@ export const processImages = asyncHandler(
             .toFormat("jpeg")
             .jpeg({ quality: 100 })
             .toFile(`uploads/room/${filename}`);
-          req.body.images.push(filename);
+          const imageUrl=await uploadImage(image.path)
+          req.body.images.push(imageUrl);
         })
       );
     }

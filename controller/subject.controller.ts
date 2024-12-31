@@ -24,7 +24,7 @@ export const getAllSubjects=asyncHandler(async (req:any,res:any)=>{
 export const createSubject=asyncHandler(async (req:any,res:any)=>{
     const subject=await Subject.create(req.body);
     if(req.file){
-        subject.image=req.file.filename;
+        subject.image=await uploadImage(req.file.path);
         await subject.save();
     }
     res.status(201).json({status:"Success",data:subject});
@@ -43,7 +43,7 @@ export const getSubject=asyncHandler(async (req:any,res:any)=>{
 export const updateSubject=asyncHandler(async (req:any,res:any)=>{
     const {id}=req.params;
     if(req.file){
-        req.body.image=req.file.filename;
+        req.body.image=await uploadImage(req.file.path);
     }
     const subject=await Subject.findByIdAndUpdate(id,req.body,{new:true});
     if(!subject){

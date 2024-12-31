@@ -16,6 +16,7 @@ exports.deleteSubject = exports.updateSubject = exports.getSubject = exports.cre
 const subject_1 = require("../model/subject");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const uploadImage_1 = require("../utils/uploadImage");
 exports.getAllSubjects = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocuments = yield subject_1.Subject.countDocuments();
     const feature = new ApiFeatures_1.ApiFeatures(subject_1.Subject.find(), req.query);
@@ -27,7 +28,7 @@ exports.getAllSubjects = (0, express_async_handler_1.default)((req, res) => __aw
 exports.createSubject = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const subject = yield subject_1.Subject.create(req.body);
     if (req.file) {
-        subject.image = req.file.filename;
+        subject.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
         yield subject.save();
     }
     res.status(201).json({ status: "Success", data: subject });
@@ -43,7 +44,7 @@ exports.getSubject = (0, express_async_handler_1.default)((req, res) => __awaite
 exports.updateSubject = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (req.file) {
-        req.body.image = req.file.filename;
+        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
     }
     const subject = yield subject_1.Subject.findByIdAndUpdate(id, req.body, { new: true });
     if (!subject) {

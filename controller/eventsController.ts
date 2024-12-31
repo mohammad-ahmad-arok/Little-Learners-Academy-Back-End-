@@ -4,6 +4,7 @@ import {ApiFeatures} from  "../utils/ApiFeatures"
 
 
 import  asyncHandler from  "express-async-handler"
+import { uploadImage } from "../utils/uploadImage";
 
 export const getAllEvents=asyncHandler(async (req:any,res:any)=>{
     const countDocuments=await event.countDocuments();
@@ -23,7 +24,7 @@ export const getAllEvents=asyncHandler(async (req:any,res:any)=>{
 export const createEvent=asyncHandler(async (req:any,res:any)=>{
     const Event=await event.create(req.body);
     if(req.file){
-        Event.image=req.file.filename;
+        Event.image=await uploadImage(req.file.path);
         await Event.save();
     }
     res.status(201).json({status:"Success",data:Event});
@@ -41,6 +42,9 @@ export const getEvent=asyncHandler(async (req:any,res:any)=>{
 
 export const updateEvent=asyncHandler(async (req:any,res:any)=>{
     const {id}=req.params;
+    if(req.file){
+        req.body.image=await uploadImage(req.file.path)
+    }
     const Event=await event.findByIdAndUpdate(id,req.body,{new:true});
     if(!Event){
         return res.status(404).json({status:"fail",message:"Event not found"});

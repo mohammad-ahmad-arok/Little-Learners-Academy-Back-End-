@@ -16,6 +16,7 @@ exports.deleteTeamMember = exports.updateTeamMember = exports.createTeamMember =
 const TeamMember_1 = require("../model/TeamMember");
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const uploadImage_1 = require("../utils/uploadImage");
 // Get all team members
 const getAllTeamMembers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -54,7 +55,7 @@ const createTeamMember = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         // Save to database
         const newMember = yield TeamMember_1.TeamMember.create(req.body);
         if (req.file) {
-            newMember.photo = req.file.filename;
+            newMember.photo = yield (0, uploadImage_1.uploadImage)(req.file.path);
             yield newMember.save();
         }
         res.status(201).json({
@@ -73,7 +74,7 @@ const updateTeamMember = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { id } = req.params;
         if (req.file) {
-            req.body.photo = req.file.filename;
+            req.body.photo = yield (0, uploadImage_1.uploadImage)(req.file.path);
         }
         const existingTeamMember = yield TeamMember_1.TeamMember.findByIdAndUpdate(id, req.body, { new: true });
         if (!existingTeamMember) {

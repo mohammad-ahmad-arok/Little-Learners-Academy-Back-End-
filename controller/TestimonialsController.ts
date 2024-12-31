@@ -2,6 +2,7 @@ import expressAsyncHandler from "express-async-handler";
 
 import { Testimonial } from "../model/Testimonial";
 import { ApiFeatures } from "../utils/ApiFeatures";
+import { uploadImage } from "../utils/uploadImage";
 
 export const getTestimonials = expressAsyncHandler(
   async (req: any, res: any) => {
@@ -34,7 +35,7 @@ export const createTestimonial = expressAsyncHandler(
   async (req: any, res: any, next: any) => {
     const testimonial = await Testimonial.create(req.body);
     if (req.file) {
-      testimonial.image = req.file.filename;
+      testimonial.image = await uploadImage(req.file.path)
       await testimonial.save();
     }
     res.status(201).json(testimonial);
@@ -44,7 +45,7 @@ export const createTestimonial = expressAsyncHandler(
 export const updateTestimonial = expressAsyncHandler(
   async (req: any, res: any) => {
     if (req.file) {
-      req.body.image = req.file.filename;
+      req.body.image = await uploadImage(req.file.path);
     }
     const testimonial = await Testimonial.findByIdAndUpdate(
       req.params.id,

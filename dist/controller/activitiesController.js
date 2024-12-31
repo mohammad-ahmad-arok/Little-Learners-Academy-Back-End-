@@ -16,6 +16,7 @@ exports.deleteActivity = exports.updateActivity = exports.getActivity = exports.
 const activities_1 = require("../model/activities");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const uploadImage_1 = require("../utils/uploadImage");
 exports.getAllActivities = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocument = yield activities_1.activities.countDocuments();
     const Activity = new ApiFeatures_1.ApiFeatures(activities_1.activities.find(), req.query);
@@ -27,7 +28,7 @@ exports.getAllActivities = (0, express_async_handler_1.default)((req, res) => __
 exports.createActivity = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const Activity = yield activities_1.activities.create(req.body);
     if (req.file) {
-        Activity.image = req.file.filename;
+        Activity.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
         yield Activity.save();
     }
     res.status(201).json({ status: "Success", data: Activity });
@@ -42,6 +43,9 @@ exports.getActivity = (0, express_async_handler_1.default)((req, res) => __await
 }));
 exports.updateActivity = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    if (req.file) {
+        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
+    }
     const Activity = yield activities_1.activities.findByIdAndUpdate(id, req.body, { new: true });
     if (!Activity) {
         return res.status(404).json({ status: "fail", message: "Feature not found" });

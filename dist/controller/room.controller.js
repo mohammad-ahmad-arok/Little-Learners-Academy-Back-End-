@@ -17,6 +17,7 @@ const room_1 = require("../model/room");
 const sharp_1 = __importDefault(require("sharp"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const ApiFeatures_1 = require("../utils/ApiFeatures");
+const uploadImage_1 = require("../utils/uploadImage");
 exports.processImages = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.files);
     req.body.images = [];
@@ -28,7 +29,8 @@ exports.processImages = (0, express_async_handler_1.default)((req, res, next) =>
                 .toFormat("jpeg")
                 .jpeg({ quality: 100 })
                 .toFile(`uploads/room/${filename}`);
-            req.body.images.push(filename);
+            const imageUrl = yield (0, uploadImage_1.uploadImage)(image.path);
+            req.body.images.push(imageUrl);
         })));
     }
     next();

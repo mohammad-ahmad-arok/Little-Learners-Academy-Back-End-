@@ -4,6 +4,7 @@ import  {ApiFeatures} from "../utils/ApiFeatures"
 
 
 import  asyncHandler from "express-async-handler"
+import { uploadImage } from "../utils/uploadImage";
 
 export const getAllFeatures=asyncHandler(async (req:any,res:any)=>{
     const countDocument=await SpecialFeature.countDocuments();
@@ -23,7 +24,7 @@ export const getAllFeatures=asyncHandler(async (req:any,res:any)=>{
 export const createFeature=asyncHandler(async (req:any,res:any)=>{
     const feature=await SpecialFeature.create(req.body);
     if(req.file){
-        feature.image=req.file.filename;
+        feature.image=await uploadImage(req.file.path);
         console.log(req.file);
         await feature.save();
     }
@@ -43,7 +44,7 @@ export const getFeature=asyncHandler(async (req:any,res:any)=>{
 export const updateFeature=asyncHandler(async (req:any,res:any)=>{
     const {id}=req.params;
     if(req.file){
-        req.body.image=req.file.filename;
+        req.body.image=await uploadImage(req.file.path);
     }
     const feature=await SpecialFeature.findByIdAndUpdate(id,req.body,{new:true});
     if(!feature){

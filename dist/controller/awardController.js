@@ -16,6 +16,7 @@ exports.deleteAward = exports.updateAward = exports.createAward = exports.getAwa
 const Award_1 = __importDefault(require("../model/Award"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const uploadImage_1 = require("../utils/uploadImage");
 // Get all awards and recognitions
 const getAllAwards = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -55,7 +56,7 @@ const createAward = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         // Save to database
         const newAward = yield Award_1.default.create(req.body);
         if (req.file) {
-            newAward.icon = req.file.filename;
+            newAward.icon = yield (0, uploadImage_1.uploadImage)(req.file.path);
             yield newAward.save();
         }
         res.status(201).json({
@@ -73,7 +74,7 @@ const updateAward = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { id } = req.params;
         if (req.file) {
-            req.body.icon = req.file.filename;
+            req.body.icon = yield (0, uploadImage_1.uploadImage)(req.file.path);
         }
         const existingAward = yield Award_1.default.findByIdAndUpdate(id, req.body, { new: true });
         if (!existingAward) {

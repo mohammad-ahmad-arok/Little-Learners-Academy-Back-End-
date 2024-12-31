@@ -48,7 +48,7 @@ export const createTeamMember = async (
        const newMember = await TeamMember.create(req.body);
 
     if(req.file){
-      newMember.photo=req.file.filename;
+      newMember.photo=await uploadImage(req.file.path);
       await newMember.save();
     }
 
@@ -69,7 +69,7 @@ export const updateTeamMember = async (req: Request, res: Response): Promise<voi
     const { id } = req.params;
     
     if(req.file){
-      req.body.photo =req.file.filename;
+      req.body.photo =await uploadImage(req.file.path);
     }
     const existingTeamMember = await TeamMember.findByIdAndUpdate(id,req.body,{new:true});
     if (!existingTeamMember) {

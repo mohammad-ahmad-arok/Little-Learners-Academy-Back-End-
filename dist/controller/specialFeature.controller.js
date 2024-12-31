@@ -16,6 +16,7 @@ exports.deleteFeature = exports.updateFeature = exports.getFeature = exports.cre
 const specialFeature_1 = require("../model/specialFeature");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
+const uploadImage_1 = require("../utils/uploadImage");
 exports.getAllFeatures = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocument = yield specialFeature_1.SpecialFeature.countDocuments();
     const feature = new ApiFeatures_1.ApiFeatures(specialFeature_1.SpecialFeature.find(), req.query);
@@ -27,7 +28,7 @@ exports.getAllFeatures = (0, express_async_handler_1.default)((req, res) => __aw
 exports.createFeature = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const feature = yield specialFeature_1.SpecialFeature.create(req.body);
     if (req.file) {
-        feature.image = req.file.filename;
+        feature.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
         console.log(req.file);
         yield feature.save();
     }
@@ -44,7 +45,7 @@ exports.getFeature = (0, express_async_handler_1.default)((req, res) => __awaite
 exports.updateFeature = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (req.file) {
-        req.body.image = req.file.filename;
+        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
     }
     const feature = yield specialFeature_1.SpecialFeature.findByIdAndUpdate(id, req.body, { new: true });
     if (!feature) {

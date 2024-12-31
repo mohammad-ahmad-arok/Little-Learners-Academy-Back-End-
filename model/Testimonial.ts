@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { uploadImage } from "../utils/uploadImage";
+import path from "path"
 
 interface TestimonialDocument {
   name: string;
@@ -7,7 +8,7 @@ interface TestimonialDocument {
   image: string;
   evaluation: number;
 }
-const testimonialSchema:Schema = new mongoose.Schema(
+const testimonialSchema: Schema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -28,20 +29,10 @@ const testimonialSchema:Schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const setImageUrl=async function(doc:TestimonialDocument){
-  if(doc.image){
-      const imageUrl=await uploadImage(`./uploads/Testimonial/${doc.image}`);
-      doc.image=imageUrl
-    }
-}
 
 
-testimonialSchema.post("save",async function(doc:TestimonialDocument){
-  await setImageUrl(doc)
-});
 
-testimonialSchema.post("init",async function(doc:TestimonialDocument){
-  await setImageUrl(doc)
-});
-
-export const Testimonial = mongoose.model<TestimonialDocument>("Testimonial", testimonialSchema);
+export const Testimonial = mongoose.model<TestimonialDocument>(
+  "Testimonial",
+  testimonialSchema
+);

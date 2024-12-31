@@ -2,6 +2,7 @@ import expressAsyncHandler from "express-async-handler"
 
 import {Benefit} from "../model/Benefit";
 import {ApiFeatures} from "../utils/ApiFeatures"
+import { uploadImage } from "../utils/uploadImage";
 
 export const getBenefits=expressAsyncHandler( async (req:any, res:any) => {
   const countDocument= await Benefit.countDocuments();
@@ -31,7 +32,7 @@ export const getBenefits=expressAsyncHandler( async (req:any, res:any) => {
 export const createBenefit=expressAsyncHandler(   async (req: any, res: any, next: any) => {
     const benefit = await Benefit.create(req.body);
     if (req.file) {
-      benefit.icon = req.file.filename;
+      benefit.icon = await uploadImage(req.file.path);
       await benefit.save();
     }
     res.status(201).json(benefit);
@@ -39,7 +40,7 @@ export const createBenefit=expressAsyncHandler(   async (req: any, res: any, nex
 
 export const updateBenefit=expressAsyncHandler(  async (req: any, res: any) => {
     if (req.file) {
-      req.body.icon = req.file.filename;
+      req.body.icon = await uploadImage(req.file.path);
     }
     const benefit = await Benefit.findByIdAndUpdate(
       req.params.id,
