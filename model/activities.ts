@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { uploadImage } from '../utils/uploadImage';
 
 interface Special {
    name:String,
@@ -26,19 +27,19 @@ const activitiesSchema=new mongoose.Schema({
 },{timestamps:true})
 
 
-const setImageUrl=function(doc:Special){
+const setImageUrl=async function(doc:Special){
     if(doc.image){
-        const imageUrl=`${process.env.BASE_URL}/activities/${doc.image}`;
+        const imageUrl=await uploadImage(`./uploads/activities/${doc.image}`);
         doc.image=imageUrl
       }
 }
 
-activitiesSchema.post("save",function(doc:Special){
-    setImageUrl(doc)
+activitiesSchema.post("save",async function(doc:Special){
+  await  setImageUrl(doc)
 });
 
-activitiesSchema.post("init",function(doc:Special){
-    setImageUrl(doc)
+activitiesSchema.post("init",async function(doc:Special){
+   await  setImageUrl(doc)
 });
 
 

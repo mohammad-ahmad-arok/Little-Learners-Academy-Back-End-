@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { TeamMember } from '../model/TeamMember';
 import path from 'path';
 import fs from 'fs';
+import { uploadImage } from '../utils/uploadImage';
 
 // Get all team members
 export const getAllTeamMembers = async (req: Request, res: Response): Promise<void> => {
@@ -36,31 +37,25 @@ export const createTeamMember = async (
 ): Promise<void> => {
   try {
     const { name, qualification, description, email } = req.body;
-
+   
     // Check if required fields are present
     if (!name || !qualification || !description || !email || !req.file) {
       res.status(400).json({ message: 'Missing required fields' }); // No return here
       return; // Only stop further execution, don't "return res"
     }
 
-    const photo = req.file.filename;
+       // Save to database
+       const newMember = await TeamMember.create(req.body);
 
-    // Save to database
-    const newMember = await TeamMember.create({
-      name,
-      qualification,
-      description,
-      email,
-      photo,
-    });
+    if(req.file){
+      newMember.photo=req.file.filename;
+      await newMember.save();
+    }
 
-    const photoUrl = `${process.env.BASE_URL}/member/${photo}`;
+    
     res.status(201).json({
       message: 'Team member created successfully!',
-      data: {
-        ...newMember.toObject(),
-        photo: photoUrl,
-      },
+      data: newMember,
     }); // Again, no explicit `return`
   } catch (error) {
     console.error('Error creating team member:', error);
@@ -72,33 +67,26 @@ export const createTeamMember = async (
 export const updateTeamMember = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { name, qualification, description, email } = req.body;
     
-    const existingTeamMember = await TeamMember.findById(id);
+    if(req.file){
+      req.body.photo =req.file.filename;
+    }
+    const existingTeamMember = await TeamMember.findByIdAndUpdate(id,req.body,{new:true});
     if (!existingTeamMember) {
       res.status(404).json({ message: 'Team member not found' });
       return;
     }
     
-    const photo = req.file ? req.file.filename : existingTeamMember.photo;
     
     if (req.file && existingTeamMember.photo) {
       const oldPhotoPath = path.join('uploads/member', existingTeamMember.photo);
       if (fs.existsSync(oldPhotoPath)) fs.unlinkSync(oldPhotoPath);
     }
-    
-    existingTeamMember.name = name;
-    existingTeamMember.qualification = qualification;
-    existingTeamMember.description = description;
-    existingTeamMember.email = email;
-    existingTeamMember.photo = photo;
-    
-    const photoUrl = `${process.env.BASE_URL}/member/${photo}`;
+
     
 
-    await existingTeamMember.save();
-
-    res.status(200).json({data:{existingTeamMember,photoUrl}});
+    
+    res.status(200).json({data:existingTeamMember});
   } catch (error) {
     res.status(500).json({ message: 'Error updating team member', error });
   }

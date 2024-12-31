@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { uploadImage } from '../utils/uploadImage';
 
 interface Sub{
     name:String,
@@ -26,20 +27,20 @@ const subjectSchema:Schema=new mongoose.Schema({
 },{timestamps:true})
 
 
-const setImageUrl=function(doc:Sub){
+const setImageUrl=async function(doc:Sub){
     if(doc.image){
-        const imageUrl=`${process.env.BASE_URL}/subject/${doc.image}`;
+        const imageUrl=await uploadImage(`./uploads/subject/${doc.image}`);
         doc.image=imageUrl
       }
 }
 
 
-subjectSchema.post("save",function(doc:Sub){
-    setImageUrl(doc)
+subjectSchema.post("save",async function(doc:Sub){
+     await setImageUrl(doc)
 });
 
-subjectSchema.post("init",function(doc:Sub){
-    setImageUrl(doc)
+subjectSchema.post("init",async function(doc:Sub){
+   await  setImageUrl(doc)
 });
 
 

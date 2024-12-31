@@ -52,17 +52,15 @@ const createAward = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             res.status(400).json({ message: 'Missing required fields' }); // No return here
             return; // Only stop further execution, don't "return res"
         }
-        const icon = req.file.filename;
         // Save to database
-        const newAward = yield Award_1.default.create({
-            title,
-            description,
-            icon,
-        });
-        const iconUrl = `${process.env.BASE_URL}/member/${icon}`;
+        const newAward = yield Award_1.default.create(req.body);
+        if (req.file) {
+            newAward.icon = req.file.filename;
+            yield newAward.save();
+        }
         res.status(201).json({
-            message: 'Award created successfully!',
-            data: Object.assign(Object.assign({}, newAward.toObject()), { icon: iconUrl }),
+            message: 'Team member created successfully!',
+            data: newAward,
         }); // Again, no explicit `return`
     }
     catch (error) {
@@ -74,24 +72,20 @@ exports.createAward = createAward;
 const updateAward = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { title, description } = req.body;
-        const existingAward = yield Award_1.default.findById(id);
+        if (req.file) {
+            req.body.icon = req.file.filename;
+        }
+        const existingAward = yield Award_1.default.findByIdAndUpdate(id, req.body, { new: true });
         if (!existingAward) {
-            res.status(404).json({ message: ' Award not found' });
+            res.status(404).json({ message: 'Team member not found' });
             return;
         }
-        const icon = req.file ? req.file.filename : existingAward.icon;
         if (req.file && existingAward.icon) {
             const oldPhotoPath = path_1.default.join('uploads/member', existingAward.icon);
             if (fs_1.default.existsSync(oldPhotoPath))
                 fs_1.default.unlinkSync(oldPhotoPath);
         }
-        existingAward.title = title;
-        existingAward.description = description;
-        existingAward.icon = icon;
-        yield existingAward.save();
-        const iconUrl = `${process.env.BASE_URL}/member/${icon}`;
-        res.status(200).json({ data: { existingAward, iconUrl } });
+        res.status(200).json({ data: existingAward });
     }
     catch (error) {
         res.status(500).json({ message: "Error updating award", error });

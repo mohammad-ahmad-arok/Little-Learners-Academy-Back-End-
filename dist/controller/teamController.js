@@ -51,19 +51,15 @@ const createTeamMember = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             res.status(400).json({ message: 'Missing required fields' }); // No return here
             return; // Only stop further execution, don't "return res"
         }
-        const photo = req.file.filename;
         // Save to database
-        const newMember = yield TeamMember_1.TeamMember.create({
-            name,
-            qualification,
-            description,
-            email,
-            photo,
-        });
-        const photoUrl = `${process.env.BASE_URL}/member/${photo}`;
+        const newMember = yield TeamMember_1.TeamMember.create(req.body);
+        if (req.file) {
+            newMember.photo = req.file.filename;
+            yield newMember.save();
+        }
         res.status(201).json({
             message: 'Team member created successfully!',
-            data: Object.assign(Object.assign({}, newMember.toObject()), { photo: photoUrl }),
+            data: newMember,
         }); // Again, no explicit `return`
     }
     catch (error) {
@@ -76,26 +72,20 @@ exports.createTeamMember = createTeamMember;
 const updateTeamMember = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { name, qualification, description, email } = req.body;
-        const existingTeamMember = yield TeamMember_1.TeamMember.findById(id);
+        if (req.file) {
+            req.body.photo = req.file.filename;
+        }
+        const existingTeamMember = yield TeamMember_1.TeamMember.findByIdAndUpdate(id, req.body, { new: true });
         if (!existingTeamMember) {
             res.status(404).json({ message: 'Team member not found' });
             return;
         }
-        const photo = req.file ? req.file.filename : existingTeamMember.photo;
         if (req.file && existingTeamMember.photo) {
             const oldPhotoPath = path_1.default.join('uploads/member', existingTeamMember.photo);
             if (fs_1.default.existsSync(oldPhotoPath))
                 fs_1.default.unlinkSync(oldPhotoPath);
         }
-        existingTeamMember.name = name;
-        existingTeamMember.qualification = qualification;
-        existingTeamMember.description = description;
-        existingTeamMember.email = email;
-        existingTeamMember.photo = photo;
-        const photoUrl = `${process.env.BASE_URL}/member/${photo}`;
-        yield existingTeamMember.save();
-        res.status(200).json({ data: { existingTeamMember, photoUrl } });
+        res.status(200).json({ data: existingTeamMember });
     }
     catch (error) {
         res.status(500).json({ message: 'Error updating team member', error });

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { uploadImage } from '../utils/uploadImage';
 
 interface Sub{
     name:String,
@@ -26,20 +27,20 @@ const eventSchema=new mongoose.Schema({
 },{timestamps:true})
 
 
-const setImageUrl=function(doc:Sub){
+const setImageUrl=async function(doc:Sub){
     if(doc.image){
-        const imageUrl=`${process.env.BASE_URL}/events/${doc.image}`;
+        const imageUrl=await uploadImage(`./uploads/events/${doc.image}`);
         doc.image=imageUrl
       }
 }
 
 
-eventSchema.post("save",function(doc:Sub){
-    setImageUrl(doc)
+eventSchema.post("save",async function(doc:Sub){
+    await setImageUrl(doc)
 });
 
-eventSchema.post("init",function(doc:Sub){
-    setImageUrl(doc)
+eventSchema.post("init",async function(doc:Sub){
+   await  setImageUrl(doc)
 });
 
 

@@ -4,6 +4,7 @@ import {ApiFeatures} from  "../utils/ApiFeatures"
 
 
 import  asyncHandler from  "express-async-handler"
+import { uploadImage } from "../utils/uploadImage";
 
 export const getAllSubjects=asyncHandler(async (req:any,res:any)=>{
     const countDocuments=await Subject.countDocuments();

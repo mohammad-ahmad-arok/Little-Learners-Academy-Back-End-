@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { uploadImage } from '../utils/uploadImage';
 
 interface Iroom {
     name:String,
@@ -31,17 +32,14 @@ const setImagesUrl=function(doc:Iroom) {
     
     let images:Array<String>=[]
     if(doc.images){
-        doc.images.forEach(image=>{
-            images.push(`${process.env.BASE_URL}/room/${image}`);
+        doc.images.forEach(async image=>{
+            const imageUrl =await uploadImage(`./uploads/room/${image}`);
+            images.push(imageUrl);
         })
         doc.images=images
       }
 }
 
-// roomSchema.pre(/^find/, function(next){
-//    this.select("-__v");
-//    next();
-// })
 
 roomSchema.post("save",function(doc:Iroom){
     setImagesUrl(doc)

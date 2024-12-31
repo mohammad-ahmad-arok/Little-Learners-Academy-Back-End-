@@ -33,22 +33,19 @@ exports.getBenefit = (0, express_async_handler_1.default)((req, res) => __awaite
     res.status(200).json(benefit);
 }));
 exports.createBenefit = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const benefit = new Benefit_1.Benefit({
-        title: req.body.title,
-        description: req.body.description,
-        icon: `http://localhost:5000/${req.file.filename}`
-    });
-    yield benefit.save();
+    const benefit = yield Benefit_1.Benefit.create(req.body);
+    if (req.file) {
+        benefit.icon = req.file.filename;
+        yield benefit.save();
+    }
     res.status(201).json(benefit);
 }));
 exports.updateBenefit = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const benefit = yield Benefit_1.Benefit.findByIdAndUpdate(req.params.id, {
-        title: req.body.title,
-        description: req.body.description,
-        icon: `http://localhost:5000/${req.file.filename}`
-    }, {
+    if (req.file) {
+        req.body.icon = req.file.filename;
+    }
+    const benefit = yield Benefit_1.Benefit.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
-        runValidators: true,
     });
     if (!benefit) {
         return res.status(404).json({ message: "benefit not found" });

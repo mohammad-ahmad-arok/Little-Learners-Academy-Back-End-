@@ -28,29 +28,24 @@ export const getBenefits=expressAsyncHandler( async (req:any, res:any) => {
 })
 
 
-export const createBenefit=expressAsyncHandler( async (req:any, res:any,next:any) => {
-    const benefit = new Benefit({
-        title: req.body.title,
-        description: req.body.description,
-        icon : `http://localhost:5000/${req.file.filename}`
-    });
-    await benefit.save();
-
+export const createBenefit=expressAsyncHandler(   async (req: any, res: any, next: any) => {
+    const benefit = await Benefit.create(req.body);
+    if (req.file) {
+      benefit.icon = req.file.filename;
+      await benefit.save();
+    }
     res.status(201).json(benefit);
+  })
 
-})
-
-export const updateBenefit=expressAsyncHandler( async (req:any, res:any) => {
+export const updateBenefit=expressAsyncHandler(  async (req: any, res: any) => {
+    if (req.file) {
+      req.body.icon = req.file.filename;
+    }
     const benefit = await Benefit.findByIdAndUpdate(
       req.params.id,
-      {
-        title: req.body.title,
-        description: req.body.description,
-        icon : `http://localhost:5000/${req.file.filename}`
-        },
+      req.body,
       {
         new: true,
-        runValidators: true,
       }
     );
 
@@ -59,8 +54,7 @@ export const updateBenefit=expressAsyncHandler( async (req:any, res:any) => {
     }
 
     res.status(200).json(benefit);
-
-})
+  })
 
 export const deleteBenefit=expressAsyncHandler( async (req:any, res:any) => {
     const benefit = await Benefit.findByIdAndDelete(req.params.id);
