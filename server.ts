@@ -27,7 +27,13 @@ import {BenefitRouter} from "./routes/BenefitRoutes"
 import messagesRouter from "./routes/messagesRoutes";
 
 import cors from 'cors';
-import generalRoutes from './routes/ServicesRoutes'; // Routes for admission process, fee structure, and additional services
+
+import { additionalServicesRouter } from "./routes/additionalServicesRoutes";
+
+import { admissionProcessesRouter } from "./routes/admissionProcessRoutes";
+
+import { feeStructuresRouter } from "./routes/feeStructureRoutes";
+
 
 
 app.use(express.json());
@@ -51,14 +57,15 @@ app.use("/api/rooms",roomRouter)
 app.use("/api/activities",activitiesRouter)
 app.use("/api/events",eventsRouter)
 app.use("/api/message", messagesRouter);
-app.use('/api/general', generalRoutes);
+app.use('/api/admission-process', admissionProcessesRouter);
+app.use('/api/additional-services', additionalServicesRouter);
+app.use('/api/fee-structure', feeStructuresRouter);
 
 
 
 
 
 
-// app.use('/uploads/member', express.static(path.join(__dirname, '../uploads/member')));
 
 app.use(express.static(path.join(__dirname,"../uploads")))
 

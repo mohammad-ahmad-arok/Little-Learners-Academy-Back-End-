@@ -24,7 +24,9 @@ const TestimonialsRoutes_1 = require("./routes/TestimonialsRoutes");
 const BenefitRoutes_1 = require("./routes/BenefitRoutes");
 const messagesRoutes_1 = __importDefault(require("./routes/messagesRoutes"));
 const cors_1 = __importDefault(require("cors"));
-const ServicesRoutes_1 = __importDefault(require("./routes/ServicesRoutes")); // Routes for admission process, fee structure, and additional services
+const additionalServicesRoutes_1 = require("./routes/additionalServicesRoutes");
+const admissionProcessRoutes_1 = require("./routes/admissionProcessRoutes");
+const feeStructureRoutes_1 = require("./routes/feeStructureRoutes");
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "*",
@@ -44,8 +46,9 @@ app.use("/api/rooms", room_route_1.roomRouter);
 app.use("/api/activities", activities_1.activitiesRouter);
 app.use("/api/events", events_1.eventsRouter);
 app.use("/api/message", messagesRoutes_1.default);
-app.use('/api/general', ServicesRoutes_1.default);
-// app.use('/uploads/member', express.static(path.join(__dirname, '../uploads/member')));
+app.use('/api/admission-process', admissionProcessRoutes_1.admissionProcessesRouter);
+app.use('/api/additional-services', additionalServicesRoutes_1.additionalServicesRouter);
+app.use('/api/fee-structure', feeStructureRoutes_1.feeStructuresRouter);
 app.use(express_1.default.static(path_1.default.join(__dirname, "../uploads")));
 app.use(errorMiddleware_1.globalError);
 app.listen(process.env.PORT, () => {
