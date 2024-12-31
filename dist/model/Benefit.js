@@ -27,7 +27,7 @@ const BenefitSchema = new mongoose_1.default.Schema({
     icon: {
         type: String,
         required: true,
-    }
+    },
 }, { timestamps: true });
 const setImageUrl = function (doc) {
     return __awaiter(this, void 0, void 0, function* () {

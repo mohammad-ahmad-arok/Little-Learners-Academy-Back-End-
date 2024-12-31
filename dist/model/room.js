@@ -32,19 +32,25 @@ const roomSchema = new mongoose_1.default.Schema({
     images: [String]
 }, { timestamps: true });
 const setImagesUrl = function (doc) {
-    let images = [];
-    if (doc.images) {
-        doc.images.forEach((image) => __awaiter(this, void 0, void 0, function* () {
-            const imageUrl = yield (0, uploadImage_1.uploadImage)(`./uploads/room/${image}`);
-            images.push(imageUrl);
-        }));
-        doc.images = images;
-    }
+    return __awaiter(this, void 0, void 0, function* () {
+        let images = [];
+        if (doc.images) {
+            doc.images.forEach((image) => __awaiter(this, void 0, void 0, function* () {
+                const imageUrl = yield (0, uploadImage_1.uploadImage)(`./uploads/room/${image}`);
+                images.push(imageUrl);
+            }));
+            doc.images = images;
+        }
+    });
 };
 roomSchema.post("save", function (doc) {
-    setImagesUrl(doc);
+    return __awaiter(this, void 0, void 0, function* () {
+        yield setImagesUrl(doc);
+    });
 });
 roomSchema.post("init", function (doc) {
-    setImagesUrl(doc);
+    return __awaiter(this, void 0, void 0, function* () {
+        yield setImagesUrl(doc);
+    });
 });
 exports.Room = mongoose_1.default.model('Room', roomSchema);

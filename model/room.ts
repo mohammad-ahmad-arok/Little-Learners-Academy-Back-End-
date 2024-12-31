@@ -28,7 +28,7 @@ const roomSchema:Schema=new mongoose.Schema({
 },{timestamps:true})
 
 
-const setImagesUrl=function(doc:Iroom) {
+const setImagesUrl=async function(doc:Iroom) {
     
     let images:Array<String>=[]
     if(doc.images){
@@ -41,12 +41,12 @@ const setImagesUrl=function(doc:Iroom) {
 }
 
 
-roomSchema.post("save",function(doc:Iroom){
-    setImagesUrl(doc)
+roomSchema.post("save",async function(doc:Iroom){
+   await setImagesUrl(doc)
 });
 
-roomSchema.post("init",function(doc:Iroom){
-    setImagesUrl(doc)
+roomSchema.post("init",async function(doc:Iroom){
+   await setImagesUrl(doc)
 });
 
 
