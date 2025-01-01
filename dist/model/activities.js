@@ -11,17 +11,22 @@ const activitiesSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         minlength: 3,
-        maxlength: 50
+        maxlength: 50,
     },
     description: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
     },
     image: {
-        type: String,
-    }
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    },
 }, { timestamps: true });
 // const setImageUrl=async function(doc:Special){
 //     if(doc.image){
@@ -35,4 +40,4 @@ const activitiesSchema = new mongoose_1.default.Schema({
 // activitiesSchema.post("init",async function(doc:Special){
 //    await  setImageUrl(doc)
 // });
-exports.activities = mongoose_1.default.model('Activities', activitiesSchema);
+exports.activities = mongoose_1.default.model("Activities", activitiesSchema);

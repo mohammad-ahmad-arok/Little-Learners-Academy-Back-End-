@@ -16,7 +16,7 @@ exports.deleteAward = exports.updateAward = exports.createAward = exports.getAwa
 const Award_1 = __importDefault(require("../model/Award"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
-const uploadImage_1 = require("../utils/uploadImage");
+const cloudinary_1 = require("../utils/cloudinary");
 // Get all awards and recognitions
 const getAllAwards = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -50,17 +50,16 @@ const createAward = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const { title, description } = req.body;
         // Check if required fields are present
         if (!title || !description || !req.file) {
-            res.status(400).json({ message: 'Missing required fields' }); // No return here
+            res.status(400).json({ message: "Missing required fields" }); // No return here
             return; // Only stop further execution, don't "return res"
+        }
+        if (req.icon) {
+            req.body.icon = req.icon;
         }
         // Save to database
         const newAward = yield Award_1.default.create(req.body);
-        if (req.file) {
-            newAward.icon = yield (0, uploadImage_1.uploadImage)(req.file.path);
-            yield newAward.save();
-        }
         res.status(201).json({
-            message: 'Team member created successfully!',
+            message: "Team member created successfully!",
             data: newAward,
         }); // Again, no explicit `return`
     }
@@ -74,15 +73,20 @@ const updateAward = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const { id } = req.params;
         if (req.file) {
-            req.body.icon = yield (0, uploadImage_1.uploadImage)(req.file.path);
+            yield (0, cloudinary_1.removeImageCloudinary)(Award_1.default, id);
         }
-        const existingAward = yield Award_1.default.findByIdAndUpdate(id, req.body, { new: true });
+        if (req.icon) {
+            req.body.icon = req.icon;
+        }
+        const existingAward = yield Award_1.default.findByIdAndUpdate(id, req.body, {
+            new: true,
+        });
         if (!existingAward) {
-            res.status(404).json({ message: 'Team member not found' });
+            res.status(404).json({ message: "Team member not found" });
             return;
         }
         if (req.file && existingAward.icon) {
-            const oldPhotoPath = path_1.default.join('uploads/member', existingAward.icon);
+            const oldPhotoPath = path_1.default.join("uploads/member", existingAward.icon);
             if (fs_1.default.existsSync(oldPhotoPath))
                 fs_1.default.unlinkSync(oldPhotoPath);
         }
@@ -97,6 +101,7 @@ exports.updateAward = updateAward;
 const deleteAward = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
+        yield (0, cloudinary_1.removeImageCloudinary)(Award_1.default, id);
         const deletedAward = yield Award_1.default.findByIdAndDelete(id);
         if (!deletedAward) {
             res.status(404).json({ message: "Award not found" });

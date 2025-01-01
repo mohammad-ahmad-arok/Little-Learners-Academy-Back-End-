@@ -15,8 +15,12 @@ const BenefitSchema = new mongoose_1.default.Schema({
         required: true,
     },
     icon: {
-        type: String,
-        required: true,
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
     },
 }, { timestamps: true });
 // const setImageUrl = async function (doc: FeatureDocument) {

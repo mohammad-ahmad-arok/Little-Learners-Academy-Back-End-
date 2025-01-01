@@ -38,7 +38,14 @@ const mongoose_1 = __importStar(require("mongoose"));
 const AwardSchema = new mongoose_1.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    icon: { type: String, required: true },
+    icon: {
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    },
 }, { timestamps: true });
 // const setImageUrl=async function(doc:IAward){
 //     if(doc.icon){

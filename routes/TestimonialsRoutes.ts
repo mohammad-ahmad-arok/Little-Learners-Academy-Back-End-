@@ -5,6 +5,9 @@ import multer from "multer";
 import {getTestimonials,getTestimonial,createTestimonial,updateTestimonial,deleteTestimonial} from "../controller/TestimonialsController"
 
 
+import uploadImage from "../middlewares/uploadImageMiddlware";
+
+
 const diskStorage = multer.diskStorage({
     destination : function(req:any, file:any, cb:any) {
         cb(null, 'uploads/Testimonial');
@@ -33,9 +36,9 @@ fileFilter: function(req:any, file:any, cb:any) {
 export const TestimonialsRouter=express.Router();
 
 
-TestimonialsRouter.route("/").get(getTestimonials).post(upload.single('image'),createTestimonial)
+TestimonialsRouter.route("/").get(getTestimonials).post(upload.single('image'),uploadImage("image"),createTestimonial)
 
-TestimonialsRouter.route("/:id").delete(deleteTestimonial).put(upload.single('image'),updateTestimonial).get(getTestimonial)
+TestimonialsRouter.route("/:id").delete(deleteTestimonial).put(upload.single('image'),uploadImage("image"),updateTestimonial).get(getTestimonial)
 
   
   

@@ -8,15 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTeamMember = exports.updateTeamMember = exports.createTeamMember = exports.getTeamMemberById = exports.getAllTeamMembers = void 0;
 const TeamMember_1 = require("../model/TeamMember");
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
-const uploadImage_1 = require("../utils/uploadImage");
+const cloudinary_1 = require("../utils/cloudinary");
 // Get all team members
 const getAllTeamMembers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -24,7 +19,7 @@ const getAllTeamMembers = (req, res) => __awaiter(void 0, void 0, void 0, functi
         res.status(200).json(teamMembers);
     }
     catch (error) {
-        res.status(500).json({ message: 'Error fetching team members', error });
+        res.status(500).json({ message: "Error fetching team members", error });
     }
 });
 exports.getAllTeamMembers = getAllTeamMembers;
@@ -34,13 +29,13 @@ const getTeamMemberById = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const { id } = req.params;
         const teamMember = yield TeamMember_1.TeamMember.findById(id);
         if (!teamMember) {
-            res.status(404).json({ message: 'Team member not found' });
+            res.status(404).json({ message: "Team member not found" });
             return;
         }
         res.status(200).json(teamMember);
     }
     catch (error) {
-        res.status(500).json({ message: 'Error fetching team member', error });
+        res.status(500).json({ message: "Error fetching team member", error });
     }
 });
 exports.getTeamMemberById = getTeamMemberById;
@@ -49,22 +44,21 @@ const createTeamMember = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         const { name, qualification, description, email } = req.body;
         // Check if required fields are present
         if (!name || !qualification || !description || !email || !req.file) {
-            res.status(400).json({ message: 'Missing required fields' }); // No return here
+            res.status(400).json({ message: "Missing required fields" }); // No return here
             return; // Only stop further execution, don't "return res"
+        }
+        if (req.photo) {
+            req.body.photo = req.photo;
         }
         // Save to database
         const newMember = yield TeamMember_1.TeamMember.create(req.body);
-        if (req.file) {
-            newMember.photo = yield (0, uploadImage_1.uploadImage)(req.file.path);
-            yield newMember.save();
-        }
         res.status(201).json({
-            message: 'Team member created successfully!',
+            message: "Team member created successfully!",
             data: newMember,
         }); // Again, no explicit `return`
     }
     catch (error) {
-        console.error('Error creating team member:', error);
+        console.error("Error creating team member:", error);
         next(error); // Pass the error to the next middleware (e.g., error handler)
     }
 });
@@ -74,22 +68,20 @@ const updateTeamMember = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { id } = req.params;
         if (req.file) {
-            req.body.photo = yield (0, uploadImage_1.uploadImage)(req.file.path);
+            yield (0, cloudinary_1.removeImageCloudinary)(TeamMember_1.TeamMember, id);
+        }
+        if (req.photo) {
+            req.body.photo = req.photo;
         }
         const existingTeamMember = yield TeamMember_1.TeamMember.findByIdAndUpdate(id, req.body, { new: true });
         if (!existingTeamMember) {
-            res.status(404).json({ message: 'Team member not found' });
+            res.status(404).json({ message: "Team member not found" });
             return;
-        }
-        if (req.file && existingTeamMember.photo) {
-            const oldPhotoPath = path_1.default.join('uploads/member', existingTeamMember.photo);
-            if (fs_1.default.existsSync(oldPhotoPath))
-                fs_1.default.unlinkSync(oldPhotoPath);
         }
         res.status(200).json({ data: existingTeamMember });
     }
     catch (error) {
-        res.status(500).json({ message: 'Error updating team member', error });
+        res.status(500).json({ message: "Error updating team member", error });
     }
 });
 exports.updateTeamMember = updateTeamMember;
@@ -97,21 +89,16 @@ exports.updateTeamMember = updateTeamMember;
 const deleteTeamMember = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const existingTeamMember = yield TeamMember_1.TeamMember.findById(id);
+        yield (0, cloudinary_1.removeImageCloudinary)(TeamMember_1.TeamMember, id);
+        const existingTeamMember = yield TeamMember_1.TeamMember.findByIdAndDelete(id);
         if (!existingTeamMember) {
-            res.status(404).json({ message: 'Team member not found' });
+            res.status(404).json({ message: "Team member not found" });
             return;
         }
-        if (existingTeamMember.photo) {
-            const photoPath = path_1.default.join('uploads/member', existingTeamMember.photo);
-            if (fs_1.default.existsSync(photoPath))
-                fs_1.default.unlinkSync(photoPath);
-        }
-        yield TeamMember_1.TeamMember.findByIdAndDelete(id);
-        res.status(200).json({ message: 'Team member deleted successfully' });
+        res.status(200).json({ message: "Team member deleted successfully" });
     }
     catch (error) {
-        res.status(500).json({ message: 'Error deleting team member', error });
+        res.status(500).json({ message: "Error deleting team member", error });
     }
 });
 exports.deleteTeamMember = deleteTeamMember;

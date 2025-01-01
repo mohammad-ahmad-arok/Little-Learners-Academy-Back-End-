@@ -11,17 +11,22 @@ const subjectSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         minlength: 3,
-        maxlength: 50
+        maxlength: 50,
     },
     description: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
     },
     image: {
-        type: String,
-    }
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    },
 }, { timestamps: true });
 // const setImageUrl=async function(doc:Sub){
 //     if(doc.image){
@@ -35,4 +40,4 @@ const subjectSchema = new mongoose_1.default.Schema({
 // subjectSchema.post("init",async function(doc:Sub){
 //    await  setImageUrl(doc)
 // });
-exports.Subject = mongoose_1.default.model('Subject', subjectSchema);
+exports.Subject = mongoose_1.default.model("Subject", subjectSchema);

@@ -2,6 +2,8 @@ import  express from "express";
 
 import  multer from "multer";
 
+import uploadImage from "../middlewares/uploadImageMiddlware";
+
 import {
   createFeatureValidator,
   getFeatureValidator,
@@ -45,11 +47,11 @@ export const specialFeaturesRouter = express.Router();
 specialFeaturesRouter
   .route("/")
   .get(getAllFeatures)
-  .post(upload.single("image"), createFeatureValidator, createFeature);
+  .post(upload.single("image"),uploadImage("image"), createFeatureValidator, createFeature);
 
   specialFeaturesRouter
   .route("/:id")
   .get(getFeatureValidator, getFeature)
-  .put(upload.single("image"),updateFeatureValidator, updateFeature)
+  .put(upload.single("image"),uploadImage("image"),updateFeatureValidator, updateFeature)
   .delete(deleteFeatureValidator, deleteFeature);
 

@@ -16,7 +16,7 @@ exports.deleteBenefit = exports.updateBenefit = exports.createBenefit = exports.
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const Benefit_1 = require("../model/Benefit");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
-const uploadImage_1 = require("../utils/uploadImage");
+const cloudinary_1 = require("../utils/cloudinary");
 exports.getBenefits = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocument = yield Benefit_1.Benefit.countDocuments();
     const feature = new ApiFeatures_1.ApiFeatures(Benefit_1.Benefit.find(), req.query);
@@ -34,16 +34,18 @@ exports.getBenefit = (0, express_async_handler_1.default)((req, res) => __awaite
     res.status(200).json(benefit);
 }));
 exports.createBenefit = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const benefit = yield Benefit_1.Benefit.create(req.body);
-    if (req.file) {
-        benefit.icon = yield (0, uploadImage_1.uploadImage)(req.file.path);
-        yield benefit.save();
+    if (req.icon) {
+        req.body.icon = req.icon;
     }
+    const benefit = yield Benefit_1.Benefit.create(req.body);
     res.status(201).json(benefit);
 }));
 exports.updateBenefit = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.file) {
-        req.body.icon = yield (0, uploadImage_1.uploadImage)(req.file.path);
+        yield (0, cloudinary_1.removeImageCloudinary)(Benefit_1.Benefit, req.params.id);
+    }
+    if (req.icon) {
+        req.body.icon = req.icon;
     }
     const benefit = yield Benefit_1.Benefit.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
@@ -54,6 +56,8 @@ exports.updateBenefit = (0, express_async_handler_1.default)((req, res) => __awa
     res.status(200).json(benefit);
 }));
 exports.deleteBenefit = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    yield (0, cloudinary_1.removeImageCloudinary)(Benefit_1.Benefit, id);
     const benefit = yield Benefit_1.Benefit.findByIdAndDelete(req.params.id);
     if (!benefit) {
         return res.status(404).json({ message: "benefit not found" });

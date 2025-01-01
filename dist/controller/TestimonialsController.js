@@ -16,7 +16,7 @@ exports.deleteTestimonial = exports.updateTestimonial = exports.createTestimonia
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const Testimonial_1 = require("../model/Testimonial");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
-const uploadImage_1 = require("../utils/uploadImage");
+const cloudinary_1 = require("../utils/cloudinary");
 exports.getTestimonials = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocument = yield Testimonial_1.Testimonial.countDocuments();
     const feature = new ApiFeatures_1.ApiFeatures(Testimonial_1.Testimonial.find(), req.query);
@@ -34,16 +34,18 @@ exports.getTestimonial = (0, express_async_handler_1.default)((req, res) => __aw
     res.status(200).json(testimonial);
 }));
 exports.createTestimonial = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const testimonial = yield Testimonial_1.Testimonial.create(req.body);
-    if (req.file) {
-        testimonial.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
-        yield testimonial.save();
+    if (req.image) {
+        req.body.image = req.image;
     }
+    const testimonial = yield Testimonial_1.Testimonial.create(req.body);
     res.status(201).json(testimonial);
 }));
 exports.updateTestimonial = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.file) {
-        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
+        yield (0, cloudinary_1.removeImageCloudinary)(Testimonial_1.Testimonial, req.params.id);
+    }
+    if (req.image) {
+        req.body.image = req.image;
     }
     const testimonial = yield Testimonial_1.Testimonial.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
@@ -54,6 +56,8 @@ exports.updateTestimonial = (0, express_async_handler_1.default)((req, res) => _
     res.status(200).json(testimonial);
 }));
 exports.deleteTestimonial = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    yield (0, cloudinary_1.removeImageCloudinary)(Testimonial_1.Testimonial, id);
     const testimonial = yield Testimonial_1.Testimonial.findByIdAndDelete(req.params.id);
     if (!testimonial) {
         return res.status(404).json({ message: "testimonial not found" });

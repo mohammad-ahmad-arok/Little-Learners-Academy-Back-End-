@@ -8,7 +8,14 @@ const teamMemberSchema = new mongoose_1.Schema({
     qualification: { type: String, required: true },
     description: { type: String, required: true },
     email: { type: String, required: true },
-    photo: { type: String }, // Store the filename of the uploaded photo
+    photo: {
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    }, // Store the filename of the uploaded photo
 }, { timestamps: true });
 // const setImageUrl=async function(doc:IMember){
 //     if(doc.photo){
@@ -23,5 +30,5 @@ const teamMemberSchema = new mongoose_1.Schema({
 //    await  setImageUrl(doc)
 // });
 // TeamMember model
-const TeamMember = (0, mongoose_1.model)('TeamMember', teamMemberSchema);
+const TeamMember = (0, mongoose_1.model)("TeamMember", teamMemberSchema);
 exports.TeamMember = TeamMember;

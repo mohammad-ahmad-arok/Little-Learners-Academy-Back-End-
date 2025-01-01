@@ -16,7 +16,7 @@ exports.deleteSubject = exports.updateSubject = exports.getSubject = exports.cre
 const subject_1 = require("../model/subject");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const uploadImage_1 = require("../utils/uploadImage");
+const cloudinary_1 = require("../utils/cloudinary");
 exports.getAllSubjects = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocuments = yield subject_1.Subject.countDocuments();
     const feature = new ApiFeatures_1.ApiFeatures(subject_1.Subject.find(), req.query);
@@ -26,37 +26,48 @@ exports.getAllSubjects = (0, express_async_handler_1.default)((req, res) => __aw
     res.status(200).json({ status: "Success", pagination, data: subjects });
 }));
 exports.createSubject = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const subject = yield subject_1.Subject.create(req.body);
-    if (req.file) {
-        subject.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
-        yield subject.save();
+    if (req.image) {
+        req.body.image = req.image;
     }
+    const subject = yield subject_1.Subject.create(req.body);
     res.status(201).json({ status: "Success", data: subject });
 }));
 exports.getSubject = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const subject = yield subject_1.Subject.findById(id);
     if (!subject) {
-        return res.status(404).json({ status: "fail", message: "subject not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "subject not found" });
     }
     res.status(200).json({ status: "Success", data: subject });
 }));
 exports.updateSubject = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (req.file) {
-        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
+        yield (0, cloudinary_1.removeImageCloudinary)(subject_1.Subject, id);
+    }
+    if (req.image) {
+        req.body.image = req.image;
     }
     const subject = yield subject_1.Subject.findByIdAndUpdate(id, req.body, { new: true });
     if (!subject) {
-        return res.status(404).json({ status: "fail", message: "subject not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "subject not found" });
     }
     res.status(200).json({ status: "Success", data: subject });
 }));
 exports.deleteSubject = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    yield (0, cloudinary_1.removeImageCloudinary)(subject_1.Subject, id);
     const subject = yield subject_1.Subject.findByIdAndDelete(id);
     if (!subject) {
-        return res.status(404).json({ status: "fail", message: "subject not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "subject not found" });
     }
-    res.status(200).json({ status: "Success", message: "subject deleted successfully" });
+    res
+        .status(200)
+        .json({ status: "Success", message: "subject deleted successfully" });
 }));

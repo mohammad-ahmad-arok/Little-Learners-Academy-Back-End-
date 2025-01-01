@@ -2,7 +2,7 @@ import expressAsyncHandler from "express-async-handler";
 
 import { Testimonial } from "../model/Testimonial";
 import { ApiFeatures } from "../utils/ApiFeatures";
-import { uploadImage } from "../utils/uploadImage";
+import { removeImageCloudinary, uploadImageCloudinary } from "../utils/cloudinary";
 
 export const getTestimonials = expressAsyncHandler(
   async (req: any, res: any) => {
@@ -33,11 +33,10 @@ export const getTestimonial = expressAsyncHandler(
 
 export const createTestimonial = expressAsyncHandler(
   async (req: any, res: any, next: any) => {
-    const testimonial = await Testimonial.create(req.body);
-    if (req.file) {
-      testimonial.image = await uploadImage(req.file.path)
-      await testimonial.save();
+    if(req.image){
+      req.body.image=req.image;
     }
+    const testimonial = await Testimonial.create(req.body);
     res.status(201).json(testimonial);
   }
 );
@@ -45,7 +44,10 @@ export const createTestimonial = expressAsyncHandler(
 export const updateTestimonial = expressAsyncHandler(
   async (req: any, res: any) => {
     if (req.file) {
-      req.body.image = await uploadImage(req.file.path);
+     await removeImageCloudinary(Testimonial,req.params.id);
+    }
+    if(req.image){
+      req.body.image=req.image;
     }
     const testimonial = await Testimonial.findByIdAndUpdate(
       req.params.id,
@@ -65,6 +67,8 @@ export const updateTestimonial = expressAsyncHandler(
 
 export const deleteTestimonial = expressAsyncHandler(
   async (req: any, res: any) => {
+      const { id } = req.params;
+      await removeImageCloudinary(Testimonial,id);
     const testimonial = await Testimonial.findByIdAndDelete(req.params.id);
     if (!testimonial) {
       return res.status(404).json({ message: "testimonial not found" });

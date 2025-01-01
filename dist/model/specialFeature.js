@@ -11,17 +11,22 @@ const specialFeatureSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         minlength: 3,
-        maxlength: 50
+        maxlength: 50,
     },
     description: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
     },
     image: {
-        type: String,
-    }
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    },
 }, { timestamps: true });
 // specialFeatureSchema.pre(/^find/, function(next){
 //    this.select("-__v");
@@ -39,4 +44,4 @@ const specialFeatureSchema = new mongoose_1.default.Schema({
 // specialFeatureSchema.post("init",async function(doc:Special){
 //    await setImageUrl(doc)
 // });
-exports.SpecialFeature = mongoose_1.default.model('Feature', specialFeatureSchema);
+exports.SpecialFeature = mongoose_1.default.model("Feature", specialFeatureSchema);

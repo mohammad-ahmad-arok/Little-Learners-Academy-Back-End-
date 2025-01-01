@@ -1,10 +1,13 @@
 import { Room } from "../model/room";
 import sharp from "sharp";
 
+import fs from "fs";
+import path from "path";
+
 import asyncHandler from "express-async-handler";
 
 import { ApiFeatures } from "../utils/ApiFeatures";
-import { uploadImage } from "../utils/uploadImage";
+import { removeImageCloudinary, removeImagesCloudinary, uploadImageCloudinary } from "../utils/cloudinary";
 
 export const processImages = asyncHandler(
   async (req: any, res: any, next: any) => {
@@ -19,8 +22,15 @@ export const processImages = asyncHandler(
             .toFormat("jpeg")
             .jpeg({ quality: 100 })
             .toFile(`uploads/room/${filename}`);
-          const imageUrl=await uploadImage(`./uploads/room/${filename}`)
-          req.body.images.push(imageUrl);
+          const result = await uploadImageCloudinary(
+            `./uploads/room/${filename}`
+          );
+          fs.unlinkSync(path.join(__dirname,`../uploads/room/${filename}`));
+          
+          req.body.images.push({
+            url: result.secure_url,
+            public_id:result.public_id
+          });
         })
       );
     }
@@ -48,6 +58,7 @@ export const createRoom = asyncHandler(async (req: any, res: any) => {
 
 export const getRoom = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
+
   const room = await Room.findById(id);
   if (!room) {
     return res.status(404).json({ status: "fail", message: "room not found" });
@@ -57,6 +68,9 @@ export const getRoom = asyncHandler(async (req: any, res: any) => {
 
 export const updateRoom = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
+  if(req.files){
+    await removeImagesCloudinary(Room,id);
+  }
   const room = await Room.findByIdAndUpdate(id, req.body, { new: true });
   if (!room) {
     return res.status(404).json({ status: "fail", message: "room not found" });
@@ -66,6 +80,7 @@ export const updateRoom = asyncHandler(async (req: any, res: any) => {
 
 export const deleteRoom = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
+  await removeImageCloudinary(Room,id);
   const room = await Room.findByIdAndDelete(id);
   if (!room) {
     return res.status(404).json({ status: "fail", message: "room not found" });

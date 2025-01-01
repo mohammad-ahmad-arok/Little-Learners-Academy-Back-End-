@@ -1,31 +1,38 @@
-import mongoose from 'mongoose';
-import { uploadImage } from '../utils/uploadImage';
+import mongoose from "mongoose";
+import { uploadImageCloudinary } from "../utils/cloudinary";
 
-interface Sub{
-    name:String,
-    description:String,
-    image:String
+interface Sub {
+  name: String;
+  description: String;
+  image: String;
 }
 
-const eventSchema=new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-        unique:true,
-        minlength:3,
-        maxlength:50
+const eventSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 3,
+      maxlength: 50,
     },
-    description:{
-        type:String,
-        required:true,
-        minlength:10,
-        maxlength:200
+    description: {
+      type: String,
+      required: true,
+      minlength: 10,
+      maxlength: 200,
     },
-    image:{
-        type:String,
-    }
-},{timestamps:true})
-
+    image: {
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      }
+    },
+  },
+  { timestamps: true }
+);
 
 // const setImageUrl=async function(doc:Sub){
 //     if(doc.image){
@@ -33,7 +40,6 @@ const eventSchema=new mongoose.Schema({
 //         doc.image=imageUrl
 //       }
 // }
-
 
 // eventSchema.post("save",async function(doc:Sub){
 //     await setImageUrl(doc)
@@ -43,5 +49,4 @@ const eventSchema=new mongoose.Schema({
 //    await  setImageUrl(doc)
 // });
 
-
-export const event=mongoose.model('Event',eventSchema);
+export const event = mongoose.model("Event", eventSchema);

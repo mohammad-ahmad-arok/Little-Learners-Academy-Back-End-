@@ -15,7 +15,12 @@ const testimonialSchema = new mongoose_1.default.Schema({
         required: true,
     },
     image: {
-        type: String,
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        },
     },
     evaluation: {
         type: Number,

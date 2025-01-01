@@ -7,6 +7,7 @@ exports.TestimonialsRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
 const TestimonialsController_1 = require("../controller/TestimonialsController");
+const uploadImageMiddlware_1 = __importDefault(require("../middlewares/uploadImageMiddlware"));
 const diskStorage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/Testimonial');
@@ -30,5 +31,5 @@ const upload = (0, multer_1.default)({
     }
 });
 exports.TestimonialsRouter = express_1.default.Router();
-exports.TestimonialsRouter.route("/").get(TestimonialsController_1.getTestimonials).post(upload.single('image'), TestimonialsController_1.createTestimonial);
-exports.TestimonialsRouter.route("/:id").delete(TestimonialsController_1.deleteTestimonial).put(upload.single('image'), TestimonialsController_1.updateTestimonial).get(TestimonialsController_1.getTestimonial);
+exports.TestimonialsRouter.route("/").get(TestimonialsController_1.getTestimonials).post(upload.single('image'), (0, uploadImageMiddlware_1.default)("image"), TestimonialsController_1.createTestimonial);
+exports.TestimonialsRouter.route("/:id").delete(TestimonialsController_1.deleteTestimonial).put(upload.single('image'), (0, uploadImageMiddlware_1.default)("image"), TestimonialsController_1.updateTestimonial).get(TestimonialsController_1.getTestimonial);

@@ -2,6 +2,8 @@ import express from "express" ;
 
 import  multer from "multer";
 
+import uploadImage from "../middlewares/uploadImageMiddlware";
+
 import  {
    createSubjectValidator,
    getSubjectValidator,
@@ -46,12 +48,12 @@ export const subjectRouter = express.Router();
 subjectRouter
   .route("/")
   .get(getAllSubjects)
-  .post(upload.single("image"), createSubjectValidator, createSubject);
+  .post(upload.single("image"),uploadImage("image"), createSubjectValidator, createSubject);
 
   subjectRouter
   .route("/:id")
   .get(getSubjectValidator, getSubject)
-  .put(upload.single("image"),updateSubjectValidator, updateSubject)
+  .put(upload.single("image"),uploadImage("image"),updateSubjectValidator, updateSubject)
   .delete(deleteSubjectValidator, deleteSubject);
 
 

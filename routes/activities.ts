@@ -2,6 +2,8 @@ import  express from "express";
 
 import  multer from "multer";
 
+import uploadImage from "../middlewares/uploadImageMiddlware";
+
 import {
   createFeatureValidator,
   getFeatureValidator,
@@ -45,11 +47,11 @@ export const activitiesRouter = express.Router();
 activitiesRouter
   .route("/")
   .get(getAllActivities)
-  .post(upload.single("image"), createFeatureValidator, createActivity);
+  .post(upload.single("image"),uploadImage("image") ,createFeatureValidator, createActivity);
 
   activitiesRouter
   .route("/:id")
   .get(getFeatureValidator, getActivity)
-  .put(updateFeatureValidator, updateActivity)
+  .put(upload.single("image"),uploadImage("image") ,updateFeatureValidator, updateActivity)
   .delete(deleteFeatureValidator, deleteActivity);
 

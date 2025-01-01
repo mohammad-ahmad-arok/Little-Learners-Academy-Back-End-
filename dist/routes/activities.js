@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.activitiesRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
+const uploadImageMiddlware_1 = __importDefault(require("../middlewares/uploadImageMiddlware"));
 const specialFeatureValidator_1 = require("../utils/validator/specialFeatureValidator");
 const ApiError_1 = require("../utils/ApiError");
 const diskStorage = multer_1.default.diskStorage({
@@ -32,9 +33,9 @@ exports.activitiesRouter = express_1.default.Router();
 exports.activitiesRouter
     .route("/")
     .get(activitiesController_1.getAllActivities)
-    .post(upload.single("image"), specialFeatureValidator_1.createFeatureValidator, activitiesController_1.createActivity);
+    .post(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), specialFeatureValidator_1.createFeatureValidator, activitiesController_1.createActivity);
 exports.activitiesRouter
     .route("/:id")
     .get(specialFeatureValidator_1.getFeatureValidator, activitiesController_1.getActivity)
-    .put(specialFeatureValidator_1.updateFeatureValidator, activitiesController_1.updateActivity)
+    .put(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), specialFeatureValidator_1.updateFeatureValidator, activitiesController_1.updateActivity)
     .delete(specialFeatureValidator_1.deleteFeatureValidator, activitiesController_1.deleteActivity);

@@ -1,30 +1,38 @@
-import mongoose, { Schema } from 'mongoose';
-import { uploadImage } from '../utils/uploadImage';
+import mongoose, { Schema } from "mongoose";
+import { uploadImageCloudinary } from "../utils/cloudinary";
 
 interface Special {
-   name:String,
-   description:String,
-   image:String
+  name: String;
+  description: String;
+  image: String;
 }
 
-const specialFeatureSchema:Schema=new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-        unique:true,
-        minlength:3,
-        maxlength:50
+const specialFeatureSchema: Schema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 3,
+      maxlength: 50,
     },
-    description:{
-        type:String,
-        required:true,
-        minlength:10,
-        maxlength:200
+    description: {
+      type: String,
+      required: true,
+      minlength: 10,
+      maxlength: 200,
     },
-    image:{
-        type:String,
-    }
-},{timestamps:true})
+    image: {
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      }
+    },
+  },
+  { timestamps: true }
+);
 
 // specialFeatureSchema.pre(/^find/, function(next){
 //    this.select("-__v");
@@ -46,6 +54,7 @@ const specialFeatureSchema:Schema=new mongoose.Schema({
 //    await setImageUrl(doc)
 // });
 
-
-
-export const SpecialFeature=mongoose.model<Special>('Feature',specialFeatureSchema);
+export const SpecialFeature = mongoose.model<Special>(
+  "Feature",
+  specialFeatureSchema
+);

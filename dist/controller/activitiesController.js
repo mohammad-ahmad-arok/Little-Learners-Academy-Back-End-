@@ -16,7 +16,7 @@ exports.deleteActivity = exports.updateActivity = exports.getActivity = exports.
 const activities_1 = require("../model/activities");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const uploadImage_1 = require("../utils/uploadImage");
+const cloudinary_1 = require("../utils/cloudinary");
 exports.getAllActivities = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocument = yield activities_1.activities.countDocuments();
     const Activity = new ApiFeatures_1.ApiFeatures(activities_1.activities.find(), req.query);
@@ -26,37 +26,50 @@ exports.getAllActivities = (0, express_async_handler_1.default)((req, res) => __
     res.status(200).json({ status: "Success", pagination, data: Activities });
 }));
 exports.createActivity = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Activity = yield activities_1.activities.create(req.body);
-    if (req.file) {
-        Activity.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
-        yield Activity.save();
+    if (req.image) {
+        req.body.image = req.image;
     }
+    const Activity = yield activities_1.activities.create(req.body);
     res.status(201).json({ status: "Success", data: Activity });
 }));
 exports.getActivity = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const Activity = yield activities_1.activities.findById(id);
     if (!Activity) {
-        return res.status(404).json({ status: "fail", message: "Feature not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "Feature not found" });
     }
     res.status(200).json({ status: "Success", data: Activity });
 }));
 exports.updateActivity = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (req.file) {
-        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
+        yield (0, cloudinary_1.removeImageCloudinary)(activities_1.activities, id);
     }
-    const Activity = yield activities_1.activities.findByIdAndUpdate(id, req.body, { new: true });
+    if (req.image) {
+        req.body.image = req.image;
+    }
+    const Activity = yield activities_1.activities.findByIdAndUpdate(id, req.body, {
+        new: true,
+    });
     if (!Activity) {
-        return res.status(404).json({ status: "fail", message: "Feature not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "Feature not found" });
     }
     res.status(200).json({ status: "Success", data: Activity });
 }));
 exports.deleteActivity = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    yield (0, cloudinary_1.removeImageCloudinary)(activities_1.activities, id);
     const Activity = yield activities_1.activities.findByIdAndDelete(id);
     if (!Activity) {
-        return res.status(404).json({ status: "fail", message: "Activity not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "Activity not found" });
     }
-    res.status(200).json({ status: "Success", message: "Activity deleted successfully" });
+    res
+        .status(200)
+        .json({ status: "Success", message: "Activity deleted successfully" });
 }));

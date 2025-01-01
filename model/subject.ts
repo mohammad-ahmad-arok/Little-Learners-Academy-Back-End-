@@ -1,31 +1,38 @@
-import mongoose, { Schema } from 'mongoose';
-import { uploadImage } from '../utils/uploadImage';
+import mongoose, { Schema } from "mongoose";
+import { uploadImageCloudinary } from "../utils/cloudinary";
 
-interface Sub{
-    name:String,
-    description:String,
-    image:String
+interface Sub {
+  name: String;
+  description: String;
+  image: String;
 }
 
-const subjectSchema:Schema=new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-        unique:true,
-        minlength:3,
-        maxlength:50
+const subjectSchema: Schema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 3,
+      maxlength: 50,
     },
-    description:{
-        type:String,
-        required:true,
-        minlength:10,
-        maxlength:200
+    description: {
+      type: String,
+      required: true,
+      minlength: 10,
+      maxlength: 200,
     },
-    image:{
-        type:String,
-    }
-},{timestamps:true})
-
+    image: {
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      }
+    },
+  },
+  { timestamps: true }
+);
 
 // const setImageUrl=async function(doc:Sub){
 //     if(doc.image){
@@ -33,7 +40,6 @@ const subjectSchema:Schema=new mongoose.Schema({
 //         doc.image=imageUrl
 //       }
 // }
-
 
 // subjectSchema.post("save",async function(doc:Sub){
 //      await setImageUrl(doc)
@@ -43,5 +49,4 @@ const subjectSchema:Schema=new mongoose.Schema({
 //    await  setImageUrl(doc)
 // });
 
-
-export const Subject=mongoose.model<Sub>('Subject',subjectSchema);
+export const Subject = mongoose.model<Sub>("Subject", subjectSchema);

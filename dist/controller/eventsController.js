@@ -16,7 +16,7 @@ exports.deleteEvent = exports.updateEvent = exports.getEvent = exports.createEve
 const events_1 = require("../model/events");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const uploadImage_1 = require("../utils/uploadImage");
+const cloudinary_1 = require("../utils/cloudinary");
 exports.getAllEvents = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocuments = yield events_1.event.countDocuments();
     const Event = new ApiFeatures_1.ApiFeatures(events_1.event.find(), req.query);
@@ -26,11 +26,10 @@ exports.getAllEvents = (0, express_async_handler_1.default)((req, res) => __awai
     res.status(200).json({ status: "Success", pagination, data: Events });
 }));
 exports.createEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const Event = yield events_1.event.create(req.body);
-    if (req.file) {
-        Event.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
-        yield Event.save();
+    if (req.image) {
+        req.body.image = req.image;
     }
+    const Event = yield events_1.event.create(req.body);
     res.status(201).json({ status: "Success", data: Event });
 }));
 exports.getEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -44,7 +43,10 @@ exports.getEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(
 exports.updateEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (req.file) {
-        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
+        yield (0, cloudinary_1.removeImageCloudinary)(events_1.event, id);
+    }
+    if (req.image) {
+        req.body.image = req.image;
     }
     const Event = yield events_1.event.findByIdAndUpdate(id, req.body, { new: true });
     if (!Event) {
@@ -54,9 +56,12 @@ exports.updateEvent = (0, express_async_handler_1.default)((req, res) => __await
 }));
 exports.deleteEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    yield (0, cloudinary_1.removeImageCloudinary)(events_1.event, id);
     const Event = yield events_1.event.findByIdAndDelete(id);
     if (!Event) {
         return res.status(404).json({ status: "fail", message: "Event not found" });
     }
-    res.status(200).json({ status: "Success", message: "Event deleted successfully" });
+    res
+        .status(200)
+        .json({ status: "Success", message: "Event deleted successfully" });
 }));

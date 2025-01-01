@@ -11,15 +11,24 @@ const roomSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         minlength: 3,
-        maxlength: 50
+        maxlength: 50,
     },
     description: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
     },
-    images: [String]
+    images: [
+        {
+            url: {
+                type: String,
+            },
+            public_id: {
+                type: String,
+            }
+        },
+    ],
 }, { timestamps: true });
 // const setImagesUrl=async function(doc:Iroom) {
 //     let images:Array<String>=[]
@@ -37,4 +46,4 @@ const roomSchema = new mongoose_1.default.Schema({
 // roomSchema.post("init",async function(doc:Iroom){
 //    await setImagesUrl(doc)
 // });
-exports.Room = mongoose_1.default.model('Room', roomSchema);
+exports.Room = mongoose_1.default.model("Room", roomSchema);

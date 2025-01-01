@@ -7,6 +7,7 @@ exports.BenefitRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
 const BenefitController_1 = require("../controller/BenefitController");
+const uploadImageMiddlware_1 = __importDefault(require("../middlewares/uploadImageMiddlware"));
 const diskStorage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/Benefit');
@@ -30,5 +31,5 @@ const upload = (0, multer_1.default)({
     }
 });
 exports.BenefitRouter = express_1.default.Router();
-exports.BenefitRouter.route("/").get(BenefitController_1.getBenefits).post(upload.single('icon'), BenefitController_1.createBenefit);
-exports.BenefitRouter.route("/:id").delete(BenefitController_1.deleteBenefit).put(upload.single('icon'), BenefitController_1.updateBenefit).get(BenefitController_1.getBenefit);
+exports.BenefitRouter.route("/").get(BenefitController_1.getBenefits).post(upload.single('icon'), (0, uploadImageMiddlware_1.default)("icon"), BenefitController_1.createBenefit);
+exports.BenefitRouter.route("/:id").delete(BenefitController_1.deleteBenefit).put(upload.single('icon'), (0, uploadImageMiddlware_1.default)("icon"), BenefitController_1.updateBenefit).get(BenefitController_1.getBenefit);

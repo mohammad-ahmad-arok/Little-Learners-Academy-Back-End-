@@ -16,7 +16,7 @@ exports.deleteFeature = exports.updateFeature = exports.getFeature = exports.cre
 const specialFeature_1 = require("../model/specialFeature");
 const ApiFeatures_1 = require("../utils/ApiFeatures");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const uploadImage_1 = require("../utils/uploadImage");
+const cloudinary_1 = require("../utils/cloudinary");
 exports.getAllFeatures = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const countDocument = yield specialFeature_1.SpecialFeature.countDocuments();
     const feature = new ApiFeatures_1.ApiFeatures(specialFeature_1.SpecialFeature.find(), req.query);
@@ -27,10 +27,8 @@ exports.getAllFeatures = (0, express_async_handler_1.default)((req, res) => __aw
 }));
 exports.createFeature = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const feature = yield specialFeature_1.SpecialFeature.create(req.body);
-    if (req.file) {
-        feature.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
-        console.log(req.file);
-        yield feature.save();
+    if (req.image) {
+        req.body.image = req.image;
     }
     res.status(201).json({ status: "Success", data: feature });
 }));
@@ -38,26 +36,40 @@ exports.getFeature = (0, express_async_handler_1.default)((req, res) => __awaite
     const { id } = req.params;
     const feature = yield specialFeature_1.SpecialFeature.findById(id);
     if (!feature) {
-        return res.status(404).json({ status: "fail", message: "Feature not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "Feature not found" });
     }
     res.status(200).json({ status: "Success", data: feature });
 }));
 exports.updateFeature = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (req.file) {
-        req.body.image = yield (0, uploadImage_1.uploadImage)(req.file.path);
+        yield (0, cloudinary_1.removeImageCloudinary)(specialFeature_1.SpecialFeature, id);
     }
-    const feature = yield specialFeature_1.SpecialFeature.findByIdAndUpdate(id, req.body, { new: true });
+    if (req.image) {
+        req.body.image = req.image;
+    }
+    const feature = yield specialFeature_1.SpecialFeature.findByIdAndUpdate(id, req.body, {
+        new: true,
+    });
     if (!feature) {
-        return res.status(404).json({ status: "fail", message: "Feature not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "Feature not found" });
     }
     res.status(200).json({ status: "Success", data: feature });
 }));
 exports.deleteFeature = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    yield (0, cloudinary_1.removeImageCloudinary)(specialFeature_1.SpecialFeature, id);
     const feature = yield specialFeature_1.SpecialFeature.findByIdAndDelete(id);
     if (!feature) {
-        return res.status(404).json({ status: "fail", message: "Feature not found" });
+        return res
+            .status(404)
+            .json({ status: "fail", message: "Feature not found" });
     }
-    res.status(200).json({ status: "Success", message: "Feature deleted successfully" });
+    res
+        .status(200)
+        .json({ status: "Success", message: "Feature deleted successfully" });
 }));

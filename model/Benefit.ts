@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { uploadImage } from "../utils/uploadImage";
+import { uploadImageCloudinary } from "../utils/cloudinary";
 
 interface FeatureDocument extends mongoose.Document {
   title: string;
@@ -17,8 +17,12 @@ const BenefitSchema = new mongoose.Schema<FeatureDocument>(
       required: true,
     },
     icon: {
-      type: String,
-      required: true,
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      }
     },
   },
   { timestamps: true }

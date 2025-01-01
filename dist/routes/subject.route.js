@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.subjectRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
+const uploadImageMiddlware_1 = __importDefault(require("../middlewares/uploadImageMiddlware"));
 const subjectValidator_1 = require("../utils/validator/subjectValidator");
 const ApiError_1 = require("../utils/ApiError");
 const diskStorage = multer_1.default.diskStorage({
@@ -32,9 +33,9 @@ exports.subjectRouter = express_1.default.Router();
 exports.subjectRouter
     .route("/")
     .get(subject_controller_1.getAllSubjects)
-    .post(upload.single("image"), subjectValidator_1.createSubjectValidator, subject_controller_1.createSubject);
+    .post(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), subjectValidator_1.createSubjectValidator, subject_controller_1.createSubject);
 exports.subjectRouter
     .route("/:id")
     .get(subjectValidator_1.getSubjectValidator, subject_controller_1.getSubject)
-    .put(upload.single("image"), subjectValidator_1.updateSubjectValidator, subject_controller_1.updateSubject)
+    .put(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), subjectValidator_1.updateSubjectValidator, subject_controller_1.updateSubject)
     .delete(subjectValidator_1.deleteSubjectValidator, subject_controller_1.deleteSubject);

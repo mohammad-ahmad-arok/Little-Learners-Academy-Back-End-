@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.specialFeaturesRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
+const uploadImageMiddlware_1 = __importDefault(require("../middlewares/uploadImageMiddlware"));
 const specialFeatureValidator_1 = require("../utils/validator/specialFeatureValidator");
 const ApiError_1 = require("../utils/ApiError");
 const diskStorage = multer_1.default.diskStorage({
@@ -32,9 +33,9 @@ exports.specialFeaturesRouter = express_1.default.Router();
 exports.specialFeaturesRouter
     .route("/")
     .get(specialFeature_controller_1.getAllFeatures)
-    .post(upload.single("image"), specialFeatureValidator_1.createFeatureValidator, specialFeature_controller_1.createFeature);
+    .post(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), specialFeatureValidator_1.createFeatureValidator, specialFeature_controller_1.createFeature);
 exports.specialFeaturesRouter
     .route("/:id")
     .get(specialFeatureValidator_1.getFeatureValidator, specialFeature_controller_1.getFeature)
-    .put(upload.single("image"), specialFeatureValidator_1.updateFeatureValidator, specialFeature_controller_1.updateFeature)
+    .put(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), specialFeatureValidator_1.updateFeatureValidator, specialFeature_controller_1.updateFeature)
     .delete(specialFeatureValidator_1.deleteFeatureValidator, specialFeature_controller_1.deleteFeature);

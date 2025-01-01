@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { uploadImage } from "../utils/uploadImage";
-import path from "path"
+import { uploadImageCloudinary } from "../utils/cloudinary";
+import path from "path";
 
 interface TestimonialDocument {
   name: string;
@@ -19,7 +19,12 @@ const testimonialSchema: Schema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      },
     },
     evaluation: {
       type: Number,
@@ -28,9 +33,6 @@ const testimonialSchema: Schema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-
-
 
 export const Testimonial = mongoose.model<TestimonialDocument>(
   "Testimonial",

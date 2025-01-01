@@ -3,6 +3,7 @@ import express from "express";
 import multer from "multer";
 import {getBenefit,getBenefits,createBenefit,updateBenefit,deleteBenefit} from "../controller/BenefitController"
 
+import uploadImage from "../middlewares/uploadImageMiddlware";
 
 const diskStorage = multer.diskStorage({
   destination : function(req:any, file:any, cb:any) {
@@ -30,6 +31,6 @@ fileFilter: function(req:any, file:any, cb:any) {
 
 export const BenefitRouter=express.Router();
 
-BenefitRouter.route("/").get(getBenefits).post(upload.single('icon'),createBenefit);
-BenefitRouter.route("/:id").delete(deleteBenefit).put(upload.single('icon'),updateBenefit).get(getBenefit)
+BenefitRouter.route("/").get(getBenefits).post(upload.single('icon'),uploadImage("icon"),createBenefit);
+BenefitRouter.route("/:id").delete(deleteBenefit).put(upload.single('icon'),uploadImage("icon"),updateBenefit).get(getBenefit)
 
