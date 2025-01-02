@@ -17,7 +17,7 @@ const MissionVision_1 = __importDefault(require("../model/MissionVision"));
 // Get the mission & vision statement
 const getMissionVision = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const missionVision = yield MissionVision_1.default.findOne();
+        const missionVision = yield MissionVision_1.default.find();
         if (!missionVision) {
             res.status(404).json({ message: "Mission and Vision not found" });
             return;
@@ -47,7 +47,7 @@ const updateMissionVision = (req, res) => __awaiter(void 0, void 0, void 0, func
     try {
         const { title, description } = req.body;
         // Check if the mission & vision exists
-        const updatedMissionVision = yield MissionVision_1.default.findOneAndUpdate({}, { title, description }, { new: true });
+        const updatedMissionVision = yield MissionVision_1.default.findOneAndUpdate({ title: req.params.title }, { title, description }, { new: true });
         if (!updatedMissionVision) {
             res.status(404).json({ message: "Mission and Vision not found" });
             return;
@@ -62,7 +62,7 @@ exports.updateMissionVision = updateMissionVision;
 // Delete the mission & vision statement
 const deleteMissionVision = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const deletedMissionVision = yield MissionVision_1.default.findOneAndDelete();
+        const deletedMissionVision = yield MissionVision_1.default.findOneAndDelete({ title: req.params.title });
         if (!deletedMissionVision) {
             res.status(404).json({ message: "Mission and Vision not found" });
             return;

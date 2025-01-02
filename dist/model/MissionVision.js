@@ -36,7 +36,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // models/MissionVision.ts
 const mongoose_1 = __importStar(require("mongoose"));
 const MissionVisionSchema = new mongoose_1.Schema({
-    title: { type: String, required: true }, // Title field (e.g., "Mission")
+    title: { type: String, required: true, unique: true }, // Title field (e.g., "Mission")
     description: { type: String, required: true }, // Description field
 }, { timestamps: true });
 exports.default = mongoose_1.default.model("MissionVision", MissionVisionSchema);

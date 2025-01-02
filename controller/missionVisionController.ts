@@ -5,7 +5,7 @@ import MissionVision from "../model/MissionVision";
 // Get the mission & vision statement
 export const getMissionVision = async (req: Request, res: Response): Promise<void> => {
   try {
-    const missionVision = await MissionVision.findOne();
+    const missionVision = await MissionVision.find();
     if (!missionVision) {
       res.status(404).json({ message: "Mission and Vision not found" });
       return;
@@ -35,7 +35,7 @@ export const updateMissionVision = async (req: Request, res: Response): Promise<
 
     // Check if the mission & vision exists
     const updatedMissionVision = await MissionVision.findOneAndUpdate(
-      {},
+      {title:req.params.title},
       { title, description },
       { new: true }
     );
@@ -54,7 +54,7 @@ export const updateMissionVision = async (req: Request, res: Response): Promise<
 // Delete the mission & vision statement
 export const deleteMissionVision = async (req: Request, res: Response): Promise<void> => {
   try {
-    const deletedMissionVision = await MissionVision.findOneAndDelete();
+    const deletedMissionVision = await MissionVision.findOneAndDelete({title:req.params.title});
     if (!deletedMissionVision) {
       res.status(404).json({ message: "Mission and Vision not found" });
       return;

@@ -12,7 +12,7 @@ router.get("/", missionVisionController_1.getMissionVision);
 // Create mission & vision
 router.post("/", missionVisionController_1.createMissionVision);
 // Update mission & vision
-router.put("/", missionVisionController_1.updateMissionVision);
+router.put("/:title", missionVisionController_1.updateMissionVision);
 // Delete mission & vision
-router.delete("/", missionVisionController_1.deleteMissionVision);
+router.delete("/:title", missionVisionController_1.deleteMissionVision);
 exports.default = router;
