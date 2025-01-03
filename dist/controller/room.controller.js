@@ -31,7 +31,7 @@ exports.processImages = (0, express_async_handler_1.default)((req, res, next) =>
                 .toFormat("jpeg")
                 .jpeg({ quality: 100 })
                 .toFile(`uploads/room/${filename}`);
-            const result = yield (0, cloudinary_1.uploadImageCloudinary)(`./uploads/room/${filename}`);
+            const result = yield (0, cloudinary_1.uploadImageCloudinary)(path_1.default.join(__dirname, `../uploads/room/${filename}`));
             fs_1.default.unlinkSync(path_1.default.join(__dirname, `../uploads/room/${filename}`));
             req.body.images.push({
                 url: result.secure_url,
@@ -74,7 +74,7 @@ exports.updateRoom = (0, express_async_handler_1.default)((req, res) => __awaite
 }));
 exports.deleteRoom = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    yield (0, cloudinary_1.removeImageCloudinary)(room_1.Room, id);
+    yield (0, cloudinary_1.removeImagesCloudinary)(room_1.Room, id);
     const room = yield room_1.Room.findByIdAndDelete(id);
     if (!room) {
         return res.status(404).json({ status: "fail", message: "room not found" });

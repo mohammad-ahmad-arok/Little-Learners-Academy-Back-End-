@@ -23,7 +23,7 @@ export const processImages = asyncHandler(
             .jpeg({ quality: 100 })
             .toFile(`uploads/room/${filename}`);
           const result = await uploadImageCloudinary(
-            `./uploads/room/${filename}`
+            path.join(__dirname,`../uploads/room/${filename}`)
           );
           fs.unlinkSync(path.join(__dirname,`../uploads/room/${filename}`));
           
@@ -80,7 +80,7 @@ export const updateRoom = asyncHandler(async (req: any, res: any) => {
 
 export const deleteRoom = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
-  await removeImageCloudinary(Room,id);
+  await removeImagesCloudinary(Room,id);
   const room = await Room.findByIdAndDelete(id);
   if (!room) {
     return res.status(404).json({ status: "fail", message: "room not found" });
