@@ -23,7 +23,7 @@ export const processImages = asyncHandler(
             .jpeg({ quality: 100 })
             .toFile(`uploads/room/${filename}`);
           const result = await uploadImageCloudinary(
-            path.join(__dirname, 'uploads',`room/${filename}`)
+            (`./uploads/room/${filename}`)
           );
           // fs.unlinkSync(path.join(__dirname,`/uploads/room/${filename}`));
           
