@@ -25,7 +25,7 @@ export const processImages = asyncHandler(
           const result = await uploadImageCloudinary(
             path.join(__dirname,`../uploads/room/${filename}`)
           );
-          fs.unlinkSync(path.join(__dirname,`../uploads/room/${filename}`));
+          // fs.unlinkSync(path.join(__dirname,`../uploads/room/${filename}`));
           
           req.body.images.push({
             url: result.secure_url,

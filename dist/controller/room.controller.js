@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteRoom = exports.updateRoom = exports.getRoom = exports.createRoom = exports.getAllRooms = exports.processImages = void 0;
 const room_1 = require("../model/room");
 const sharp_1 = __importDefault(require("sharp"));
-const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const ApiFeatures_1 = require("../utils/ApiFeatures");
@@ -32,7 +31,7 @@ exports.processImages = (0, express_async_handler_1.default)((req, res, next) =>
                 .jpeg({ quality: 100 })
                 .toFile(`uploads/room/${filename}`);
             const result = yield (0, cloudinary_1.uploadImageCloudinary)(path_1.default.join(__dirname, `../uploads/room/${filename}`));
-            fs_1.default.unlinkSync(path_1.default.join(__dirname, `../uploads/room/${filename}`));
+            // fs.unlinkSync(path.join(__dirname,`../uploads/room/${filename}`));
             req.body.images.push({
                 url: result.secure_url,
                 public_id: result.public_id
