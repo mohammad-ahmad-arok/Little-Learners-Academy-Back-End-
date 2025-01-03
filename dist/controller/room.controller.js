@@ -30,7 +30,7 @@ exports.processImages = (0, express_async_handler_1.default)((req, res, next) =>
                 .toFormat("jpeg")
                 .jpeg({ quality: 100 })
                 .toFile(`uploads/room/${filename}`);
-            const result = yield (0, cloudinary_1.uploadImageCloudinary)(path_1.default.join(__dirname, `../uploads/room/${filename}`));
+            const result = yield (0, cloudinary_1.uploadImageCloudinary)(path_1.default.join(__dirname, 'uploads', `room/${filename}`));
             // fs.unlinkSync(path.join(__dirname,`/uploads/room/${filename}`));
             req.body.images.push({
                 url: result.secure_url,
