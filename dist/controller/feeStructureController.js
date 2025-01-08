@@ -28,7 +28,7 @@ exports.getAllFeeStructures = (0, express_async_handler_1.default)((req, res) =>
 }));
 exports.createfeeStructure = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { program, ageGroup, annualTuition, registrationFee, activityFee } = req.body;
-    if (!program || !ageGroup || annualTuition || registrationFee || activityFee) {
+    if (!program || !ageGroup || !annualTuition || !registrationFee || !activityFee) {
         return res.status(400).json({ status: "fail", message: "feilds are required" });
     }
     const feeStructure = yield FeeStructure_1.default.create(req.body);

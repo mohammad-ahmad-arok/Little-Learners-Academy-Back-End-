@@ -26,10 +26,10 @@ exports.getAllFeatures = (0, express_async_handler_1.default)((req, res) => __aw
     res.status(200).json({ status: "Success", pagination, data: features });
 }));
 exports.createFeature = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const feature = yield specialFeature_1.SpecialFeature.create(req.body);
     if (req.image) {
         req.body.image = req.image;
     }
+    const feature = yield specialFeature_1.SpecialFeature.create(req.body);
     res.status(201).json({ status: "Success", data: feature });
 }));
 exports.getFeature = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {

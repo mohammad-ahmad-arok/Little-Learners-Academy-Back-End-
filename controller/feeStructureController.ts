@@ -25,7 +25,7 @@ export const getAllFeeStructures = asyncHandler(
 export const createfeeStructure = asyncHandler(
   async (req: any, res: any) => {
     const {program,ageGroup,annualTuition,registrationFee,activityFee}=req.body;
-    if(!program || !ageGroup || annualTuition ||registrationFee || activityFee) { 
+    if(!program || !ageGroup || !annualTuition || !registrationFee || !activityFee) { 
       return res.status(400).json({ status: "fail", message: "feilds are required" });
     }
     const feeStructure = await FeeStructure.create(req.body);

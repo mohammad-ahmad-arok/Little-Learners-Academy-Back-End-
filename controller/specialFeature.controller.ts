@@ -20,10 +20,10 @@ export const getAllFeatures = asyncHandler(async (req: any, res: any) => {
 });
 
 export const createFeature = asyncHandler(async (req: any, res: any) => {
+  if(req.image){
+    req.body.image=req.image;
+  }
   const feature = await SpecialFeature.create(req.body);
-    if(req.image){
-      req.body.image=req.image;
-    }
   res.status(201).json({ status: "Success", data: feature });
 });
 
