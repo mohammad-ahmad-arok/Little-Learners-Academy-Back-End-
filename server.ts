@@ -15,7 +15,8 @@ import {roomRouter} from "./routes/room.route"
 
 import  {activitiesRouter} from "./routes/activities"
 import {eventsRouter} from "./routes/events"
-
+import {authRouter} from "./routes/authRoutes"
+ 
 import teamRouter from './routes/teamRoutes'; // Import your routes
 import historyRoutes from "./routes/historyRoutes";
 import awardRoutes from "./routes/awardRoutes"; 
@@ -34,6 +35,7 @@ import { admissionProcessesRouter } from "./routes/admissionProcessRoutes";
 
 import { feeStructuresRouter } from "./routes/feeStructureRoutes";
 
+import {Protect} from "./controller/authController"
 
 
 app.use(express.json());
@@ -43,7 +45,12 @@ app.use(cors({
     methods:["GET","POST","DELETE","PUT"],
 }))
 
+
+app.use("/api",authRouter)
+
+
 // All routes in teamRouter will now be prefixed with /team-members
+app.use(Protect)
 app.use('/api/team-members', teamRouter);
 app.use("/api/history", historyRoutes);
 app.use("/api/awards", awardRoutes);

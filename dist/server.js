@@ -15,6 +15,7 @@ const subject_route_1 = require("./routes/subject.route");
 const room_route_1 = require("./routes/room.route");
 const activities_1 = require("./routes/activities");
 const events_1 = require("./routes/events");
+const authRoutes_1 = require("./routes/authRoutes");
 const teamRoutes_1 = __importDefault(require("./routes/teamRoutes")); // Import your routes
 const historyRoutes_1 = __importDefault(require("./routes/historyRoutes"));
 const awardRoutes_1 = __importDefault(require("./routes/awardRoutes"));
@@ -27,12 +28,15 @@ const cors_1 = __importDefault(require("cors"));
 const additionalServicesRoutes_1 = require("./routes/additionalServicesRoutes");
 const admissionProcessRoutes_1 = require("./routes/admissionProcessRoutes");
 const feeStructureRoutes_1 = require("./routes/feeStructureRoutes");
+const authController_1 = require("./controller/authController");
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT"],
 }));
+app.use("/api", authRoutes_1.authRouter);
 // All routes in teamRouter will now be prefixed with /team-members
+app.use(authController_1.Protect);
 app.use('/api/team-members', teamRoutes_1.default);
 app.use("/api/history", historyRoutes_1.default);
 app.use("/api/awards", awardRoutes_1.default);
