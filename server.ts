@@ -50,7 +50,9 @@ app.use("/api",authRouter)
 
 
 // All routes in teamRouter will now be prefixed with /team-members
-app.use(Protect)
+
+// app.use(Protect)
+
 app.use('/api/team-members', teamRouter);
 app.use("/api/history", historyRoutes);
 app.use("/api/awards", awardRoutes);

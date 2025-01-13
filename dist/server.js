@@ -28,7 +28,6 @@ const cors_1 = __importDefault(require("cors"));
 const additionalServicesRoutes_1 = require("./routes/additionalServicesRoutes");
 const admissionProcessRoutes_1 = require("./routes/admissionProcessRoutes");
 const feeStructureRoutes_1 = require("./routes/feeStructureRoutes");
-const authController_1 = require("./controller/authController");
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "*",
@@ -36,7 +35,7 @@ app.use((0, cors_1.default)({
 }));
 app.use("/api", authRoutes_1.authRouter);
 // All routes in teamRouter will now be prefixed with /team-members
-app.use(authController_1.Protect);
+// app.use(Protect)
 app.use('/api/team-members', teamRoutes_1.default);
 app.use("/api/history", historyRoutes_1.default);
 app.use("/api/awards", awardRoutes_1.default);
