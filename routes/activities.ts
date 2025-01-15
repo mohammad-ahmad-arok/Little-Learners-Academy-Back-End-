@@ -5,11 +5,11 @@ import  multer from "multer";
 import uploadImage from "../middlewares/uploadImageMiddlware";
 
 import {
-  createFeatureValidator,
-  getFeatureValidator,
-  updateFeatureValidator,
-  deleteFeatureValidator,
-} from"../utils/validator/specialFeatureValidator";
+  createActivityValidator,
+  getActivityValidator,
+  updateActivityValidator,
+  deleteActivityValidator,
+} from"../utils/validator/activitiesValidator";
 
 import {ApiError} from "../utils/ApiError"
 
@@ -47,11 +47,11 @@ export const activitiesRouter = express.Router();
 activitiesRouter
   .route("/")
   .get(getAllActivities)
-  .post(upload.single("image"),uploadImage("image") ,createFeatureValidator, createActivity);
+  .post(upload.single("image"),uploadImage("image") ,createActivityValidator, createActivity);
 
   activitiesRouter
   .route("/:id")
-  .get(getFeatureValidator, getActivity)
-  .put(upload.single("image"),uploadImage("image") ,updateFeatureValidator, updateActivity)
-  .delete(deleteFeatureValidator, deleteActivity);
+  .get(getActivityValidator, getActivity)
+  .put(upload.single("image"),uploadImage("image") ,updateActivityValidator, updateActivity)
+  .delete(deleteActivityValidator, deleteActivity);
 

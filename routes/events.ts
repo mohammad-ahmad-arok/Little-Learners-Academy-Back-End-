@@ -11,6 +11,8 @@ import  {
    deleteSubjectValidator,
 } from "../utils/validator/subjectValidator";
 
+import {createEventValidator,getEventValidator,updateEventValidator,deleteEventValidator} from "../utils/validator/eventValidator"
+
 import {ApiError} from "../utils/ApiError"
 
 const diskStorage = multer.diskStorage({
@@ -48,12 +50,12 @@ export const eventsRouter = express.Router();
 eventsRouter
   .route("/")
   .get(getAllEvents)
-  .post(upload.single("image"),uploadImage("image"), createSubjectValidator, createEvent);
+  .post(upload.single("image"),uploadImage("image"), createEventValidator, createEvent);
 
   eventsRouter
   .route("/:id")
-  .get(getSubjectValidator, getEvent)
-  .put(upload.single("image"),uploadImage("image"), updateSubjectValidator, updateEvent)
-  .delete(deleteSubjectValidator, deleteEvent);
+  .get(getEventValidator, getEvent)
+  .put(upload.single("image"),uploadImage("image"), updateEventValidator, updateEvent)
+  .delete(deleteEventValidator, deleteEvent);
 
 

@@ -6,11 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // routes/missionVisionRoutes.ts
 const express_1 = __importDefault(require("express"));
 const missionVisionController_1 = require("../controller/missionVisionController");
+const missionVisionValidator_1 = require("../utils/validator/missionVisionValidator");
 const router = express_1.default.Router();
 // Get mission & vision
 router.get("/", missionVisionController_1.getMissionVision);
 // Create mission & vision
-router.post("/", missionVisionController_1.createMissionVision);
+router.post("/", missionVisionValidator_1.createMissionVisionValidator, missionVisionController_1.createMissionVision);
 // Update mission & vision
 router.put("/:title", missionVisionController_1.updateMissionVision);
 // Delete mission & vision

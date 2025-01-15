@@ -12,16 +12,18 @@ import   {
     deleteFeeStructure
 } from "../controller/feeStructureController" ;
 
+import { createFeeValidator, deleteFeeValidator, getFeeValidator, updateFeeValidator } from "../utils/validator/FeeValidator"
+
 export const feeStructuresRouter = express.Router();
 
 feeStructuresRouter
   .route("/")
   .get(getAllFeeStructures)
-  .post(createfeeStructure);
+  .post(createFeeValidator,createfeeStructure);
 
   feeStructuresRouter
   .route("/:id")
-  .get(getfeeStructure)
-  .put(updateFeeStructure)
-  .delete(deleteFeeStructure);
+  .get(getFeeValidator,getfeeStructure)
+  .put(updateFeeValidator,updateFeeStructure)
+  .delete(deleteFeeValidator,deleteFeeStructure);
 

@@ -1,67 +1,19 @@
 import { event } from "../model/events";
 
-import { ApiFeatures } from "../utils/ApiFeatures";
-
-import asyncHandler from "express-async-handler";
 import {
-  removeImageCloudinary,
-  uploadImageCloudinary,
-} from "../utils/cloudinary";
+  createOne,
+  deleteOne,
+  getAll,
+  getOne,
+  updateOne,
+} from "./FactoryHandlers";
 
-export const getAllEvents = asyncHandler(async (req: any, res: any) => {
-  const countDocuments = await event.countDocuments();
+export const getAllEvents = getAll(event);
 
-  const Event = new ApiFeatures(event.find(), req.query);
+export const createEvent = createOne(event);
 
-  Event.Paginate(countDocuments).Filter();
+export const getEvent = getOne(event);
 
-  const { mongooseQuery, pagination } = Event;
+export const updateEvent = updateOne(event);
 
-  const Events = await mongooseQuery;
-
-  res.status(200).json({ status: "Success", pagination, data: Events });
-});
-
-export const createEvent = asyncHandler(async (req: any, res: any) => {
-  if (req.image) {
-    req.body.image = req.image;
-  }
-  const Event = await event.create(req.body);
-  res.status(201).json({ status: "Success", data: Event });
-});
-
-export const getEvent = asyncHandler(async (req: any, res: any) => {
-  const { id } = req.params;
-  const Event = await event.findById(id);
-  if (!Event) {
-    return res.status(404).json({ status: "fail", message: "Event not found" });
-  }
-  res.status(200).json({ status: "Success", data: Event });
-});
-
-export const updateEvent = asyncHandler(async (req: any, res: any) => {
-  const { id } = req.params;
-  if (req.file) {
-    await removeImageCloudinary(event, id);
-  }
-  if (req.image) {
-    req.body.image = req.image;
-  }
-  const Event = await event.findByIdAndUpdate(id, req.body, { new: true });
-  if (!Event) {
-    return res.status(404).json({ status: "fail", message: "Event not found" });
-  }
-  res.status(200).json({ status: "Success", data: Event });
-});
-
-export const deleteEvent = asyncHandler(async (req: any, res: any) => {
-  const { id } = req.params;
-  await removeImageCloudinary(event, id);
-  const Event = await event.findByIdAndDelete(id);
-  if (!Event) {
-    return res.status(404).json({ status: "fail", message: "Event not found" });
-  }
-  res
-    .status(200)
-    .json({ status: "Success", message: "Event deleted successfully" });
-});
+export const deleteEvent = deleteOne(event);

@@ -16,8 +16,8 @@ exports.deleteRoom = exports.updateRoom = exports.getRoom = exports.createRoom =
 const room_1 = require("../model/room");
 const sharp_1 = __importDefault(require("sharp"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const ApiFeatures_1 = require("../utils/ApiFeatures");
 const cloudinary_1 = require("../utils/cloudinary");
+const FactoryHandlers_1 = require("./FactoryHandlers");
 exports.processImages = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.files);
     req.body.images = [];
@@ -29,55 +29,18 @@ exports.processImages = (0, express_async_handler_1.default)((req, res, next) =>
                 .toFormat("jpeg")
                 .jpeg({ quality: 100 })
                 .toFile(`uploads/room/${filename}`);
-            const result = yield (0, cloudinary_1.uploadImageCloudinary)((`./uploads/room/${filename}`));
+            const result = yield (0, cloudinary_1.uploadImageCloudinary)(`./uploads/room/${filename}`);
             // fs.unlinkSync(path.join(__dirname,`/uploads/room/${filename}`));
             req.body.images.push({
                 url: result.secure_url,
-                public_id: result.public_id
+                public_id: result.public_id,
             });
         })));
     }
     next();
 }));
-exports.getAllRooms = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const countDocuments = yield room_1.Room.countDocuments();
-    const feature = new ApiFeatures_1.ApiFeatures(room_1.Room.find({}), req.query);
-    feature.Paginate(countDocuments).Filter();
-    const { mongooseQuery, pagination } = feature;
-    const rooms = yield mongooseQuery;
-    res.status(200).json({ status: "Success", pagination, data: rooms });
-}));
-exports.createRoom = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const room = yield room_1.Room.create(req.body);
-    res.status(201).json({ status: "Success", data: room });
-}));
-exports.getRoom = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const room = yield room_1.Room.findById(id);
-    if (!room) {
-        return res.status(404).json({ status: "fail", message: "room not found" });
-    }
-    res.status(200).json({ status: "Success", data: room });
-}));
-exports.updateRoom = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    if (req.files) {
-        yield (0, cloudinary_1.removeImagesCloudinary)(room_1.Room, id);
-    }
-    const room = yield room_1.Room.findByIdAndUpdate(id, req.body, { new: true });
-    if (!room) {
-        return res.status(404).json({ status: "fail", message: "room not found" });
-    }
-    res.status(200).json({ status: "Success", data: room });
-}));
-exports.deleteRoom = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    yield (0, cloudinary_1.removeImagesCloudinary)(room_1.Room, id);
-    const room = yield room_1.Room.findByIdAndDelete(id);
-    if (!room) {
-        return res.status(404).json({ status: "fail", message: "room not found" });
-    }
-    res
-        .status(200)
-        .json({ status: "Success", message: "room deleted successfully" });
-}));
+exports.getAllRooms = (0, FactoryHandlers_1.getAll)(room_1.Room);
+exports.createRoom = (0, FactoryHandlers_1.createOne)(room_1.Room);
+exports.getRoom = (0, FactoryHandlers_1.getOne)(room_1.Room);
+exports.updateRoom = (0, FactoryHandlers_1.updateOne)(room_1.Room);
+exports.deleteRoom = (0, FactoryHandlers_1.deleteOne)(room_1.Room);

@@ -12,16 +12,19 @@ import   {
   deleteAdditionalService
 } from "../controller/additionalServicesController" ;
 
+
+import {createServiceValidator,getServiceValidator,updateServiceValidator,deleteServiceValidator} from "../utils/validator/additionalValidator"
+
 export const additionalServicesRouter = express.Router();
 
 additionalServicesRouter
   .route("/")
   .get(getAllAdditionalServices)
-  .post(createAdditionalService);
+  .post(createServiceValidator,createAdditionalService);
 
   additionalServicesRouter
   .route("/:id")
-  .get(getAdditionalService)
-  .put(updateAdditionalService)
-  .delete(deleteAdditionalService);
+  .get(getServiceValidator,getAdditionalService)
+  .put(updateServiceValidator,updateAdditionalService)
+  .delete(deleteServiceValidator,deleteAdditionalService);
 

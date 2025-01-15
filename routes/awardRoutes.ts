@@ -13,12 +13,15 @@ import {
   deleteAward
 } from "../controller/awardController";
 
+
+import {createAwardValidator,getAwardValidator,updateAwardValidator,deleteAwardValidator} from "../utils/validator/awardValidator"
+
 const router = express.Router();
 
 router.get("/", getAllAwards); // Get all awards
-router.get("/:id", getAwardById); // Get a single award by ID
-router.post("/", upload.single('icon'),uploadImage("icon"), createAward); // Create a new award
-router.put("/:id", upload.single('icon'),uploadImage("icon"), updateAward); // Update an award by ID
-router.delete("/:id", deleteAward); // Delete an award by ID
+router.get("/:id",getAwardValidator, getAwardById); // Get a single award by ID
+router.post("/", upload.single('icon'),uploadImage("icon"),createAwardValidator, createAward); // Create a new award
+router.put("/:id", upload.single('icon'),uploadImage("icon"),updateAwardValidator, updateAward); // Update an award by ID
+router.delete("/:id",deleteAwardValidator, deleteAward); // Delete an award by ID
 
 export default router;

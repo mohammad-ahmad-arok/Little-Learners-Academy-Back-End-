@@ -12,16 +12,18 @@ updateAdmissionProcess,
 deleteAdmissionProcess
 } from "../controller/admissionProcessController" ;
 
+import {createAdmissionValidator,getAdmissionValidator,updateAdmissionValidator,deleteAdmissionValidator} from "../utils/validator/admissionValidator"
+
 export const admissionProcessesRouter = express.Router();
 
 admissionProcessesRouter
   .route("/")
   .get(getAllAdmissionProcesses)
-  .post(createAdmissionProcess);
+  .post(createAdmissionValidator,createAdmissionProcess);
 
   admissionProcessesRouter
   .route("/:id")
-  .get(getAdmissionProcess)
-  .put(updateAdmissionProcess)
-  .delete(deleteAdmissionProcess);
+  .get(getAdmissionValidator,getAdmissionProcess)
+  .put(updateAdmissionValidator,updateAdmissionProcess)
+  .delete(deleteAdmissionValidator,deleteAdmissionProcess);
 

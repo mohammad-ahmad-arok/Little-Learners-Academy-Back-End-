@@ -1,104 +1,14 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTeamMember = exports.updateTeamMember = exports.createTeamMember = exports.getTeamMemberById = exports.getAllTeamMembers = void 0;
 const TeamMember_1 = require("../model/TeamMember");
-const cloudinary_1 = require("../utils/cloudinary");
+const FactoryHandlers_1 = require("./FactoryHandlers");
 // Get all team members
-const getAllTeamMembers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const teamMembers = yield TeamMember_1.TeamMember.find();
-        res.status(200).json(teamMembers);
-    }
-    catch (error) {
-        res.status(500).json({ message: "Error fetching team members", error });
-    }
-});
-exports.getAllTeamMembers = getAllTeamMembers;
+exports.getAllTeamMembers = (0, FactoryHandlers_1.getAll)(TeamMember_1.TeamMember);
 // Get a single team member by ID
-const getTeamMemberById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const teamMember = yield TeamMember_1.TeamMember.findById(id);
-        if (!teamMember) {
-            res.status(404).json({ message: "Team member not found" });
-            return;
-        }
-        res.status(200).json(teamMember);
-    }
-    catch (error) {
-        res.status(500).json({ message: "Error fetching team member", error });
-    }
-});
-exports.getTeamMemberById = getTeamMemberById;
-const createTeamMember = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { name, qualification, description, email } = req.body;
-        // Check if required fields are present
-        if (!name || !qualification || !description || !email || !req.file) {
-            res.status(400).json({ message: "Missing required fields" }); // No return here
-            return; // Only stop further execution, don't "return res"
-        }
-        if (req.photo) {
-            req.body.photo = req.photo;
-        }
-        // Save to database
-        const newMember = yield TeamMember_1.TeamMember.create(req.body);
-        res.status(201).json({
-            message: "Team member created successfully!",
-            data: newMember,
-        }); // Again, no explicit `return`
-    }
-    catch (error) {
-        console.error("Error creating team member:", error);
-        next(error); // Pass the error to the next middleware (e.g., error handler)
-    }
-});
-exports.createTeamMember = createTeamMember;
+exports.getTeamMemberById = (0, FactoryHandlers_1.getOne)(TeamMember_1.TeamMember);
+exports.createTeamMember = (0, FactoryHandlers_1.createOne)(TeamMember_1.TeamMember);
 // Update a team member
-const updateTeamMember = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        if (req.file) {
-            yield (0, cloudinary_1.removeImageCloudinary)(TeamMember_1.TeamMember, id);
-        }
-        if (req.photo) {
-            req.body.photo = req.photo;
-        }
-        const existingTeamMember = yield TeamMember_1.TeamMember.findByIdAndUpdate(id, req.body, { new: true });
-        if (!existingTeamMember) {
-            res.status(404).json({ message: "Team member not found" });
-            return;
-        }
-        res.status(200).json({ data: existingTeamMember });
-    }
-    catch (error) {
-        res.status(500).json({ message: "Error updating team member", error });
-    }
-});
-exports.updateTeamMember = updateTeamMember;
+exports.updateTeamMember = (0, FactoryHandlers_1.updateOne)(TeamMember_1.TeamMember);
 // Delete a team member
-const deleteTeamMember = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        yield (0, cloudinary_1.removeImageCloudinary)(TeamMember_1.TeamMember, id);
-        const existingTeamMember = yield TeamMember_1.TeamMember.findByIdAndDelete(id);
-        if (!existingTeamMember) {
-            res.status(404).json({ message: "Team member not found" });
-            return;
-        }
-        res.status(200).json({ message: "Team member deleted successfully" });
-    }
-    catch (error) {
-        res.status(500).json({ message: "Error deleting team member", error });
-    }
-});
-exports.deleteTeamMember = deleteTeamMember;
+exports.deleteTeamMember = (0, FactoryHandlers_1.deleteOne)(TeamMember_1.TeamMember);

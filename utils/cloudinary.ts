@@ -22,10 +22,15 @@ export const removeImageCloudinary = async (Model:any,id:string) => {
       const result = await cloudinary.uploader.destroy(doc.image.public_id)
       return result
     }
-    else{
+    else if(doc.icon.public_id){
       const result = await cloudinary.uploader.destroy(doc.icon.public_id)
       return result
      }
+     else if(doc.photo.public_id){
+      const result = await cloudinary.uploader.destroy(doc.photo.public_id)
+      return result
+     }
+      return ;
   } catch (error) {
     console.log(error);
   }

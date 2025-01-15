@@ -7,7 +7,7 @@ exports.activitiesRouter = void 0;
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
 const uploadImageMiddlware_1 = __importDefault(require("../middlewares/uploadImageMiddlware"));
-const specialFeatureValidator_1 = require("../utils/validator/specialFeatureValidator");
+const activitiesValidator_1 = require("../utils/validator/activitiesValidator");
 const ApiError_1 = require("../utils/ApiError");
 const diskStorage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
@@ -33,9 +33,9 @@ exports.activitiesRouter = express_1.default.Router();
 exports.activitiesRouter
     .route("/")
     .get(activitiesController_1.getAllActivities)
-    .post(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), specialFeatureValidator_1.createFeatureValidator, activitiesController_1.createActivity);
+    .post(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), activitiesValidator_1.createActivityValidator, activitiesController_1.createActivity);
 exports.activitiesRouter
     .route("/:id")
-    .get(specialFeatureValidator_1.getFeatureValidator, activitiesController_1.getActivity)
-    .put(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), specialFeatureValidator_1.updateFeatureValidator, activitiesController_1.updateActivity)
-    .delete(specialFeatureValidator_1.deleteFeatureValidator, activitiesController_1.deleteActivity);
+    .get(activitiesValidator_1.getActivityValidator, activitiesController_1.getActivity)
+    .put(upload.single("image"), (0, uploadImageMiddlware_1.default)("image"), activitiesValidator_1.updateActivityValidator, activitiesController_1.updateActivity)
+    .delete(activitiesValidator_1.deleteActivityValidator, activitiesController_1.deleteActivity);
