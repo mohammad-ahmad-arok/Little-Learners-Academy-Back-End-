@@ -8,7 +8,7 @@ interface IMissionVision extends Document {
 
 const MissionVisionSchema: Schema = new Schema(
   {
-    title: { type: String, required: true },  // Title field (e.g., "Mission")
+    title: { type: String, required: true ,unique:true},  // Title field (e.g., "Mission")
     description: { type: String, required: true },  // Description field
   },
   { timestamps: true }

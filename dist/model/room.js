@@ -11,33 +11,39 @@ const roomSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         minlength: 3,
-        maxlength: 50
+        maxlength: 50,
     },
     description: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
     },
-    images: [String]
+    images: [
+        {
+            url: {
+                type: String,
+            },
+            public_id: {
+                type: String,
+            }
+        },
+    ],
 }, { timestamps: true });
-const setImagesUrl = function (doc) {
-    let images = [];
-    if (doc.images) {
-        doc.images.forEach(image => {
-            images.push(`${process.env.BASE_URL}/room/${image}`);
-        });
-        doc.images = images;
-    }
-};
-// roomSchema.pre(/^find/, function(next){
-//    this.select("-__v");
-//    next();
-// })
-roomSchema.post("save", function (doc) {
-    setImagesUrl(doc);
-});
-roomSchema.post("init", function (doc) {
-    setImagesUrl(doc);
-});
-exports.Room = mongoose_1.default.model('Room', roomSchema);
+// const setImagesUrl=async function(doc:Iroom) {
+//     let images:Array<String>=[]
+//     if(doc.images){
+//        for(let image in doc.images){
+//          const imageUrl=await uploadImage(`./uploads/room/${doc.images[image]}`);
+//          images.push(imageUrl);
+//        }
+//        doc.images=images;
+//       }
+// }
+// roomSchema.post("save",async function(doc:Iroom){
+//    await setImagesUrl(doc)
+// });
+// roomSchema.post("init",async function(doc:Iroom){
+//    await setImagesUrl(doc)
+// });
+exports.Room = mongoose_1.default.model("Room", roomSchema);

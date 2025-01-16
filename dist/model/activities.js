@@ -11,28 +11,33 @@ const activitiesSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         minlength: 3,
-        maxlength: 50
+        maxlength: 50,
     },
     description: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
     },
     image: {
-        type: String,
-    }
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    },
 }, { timestamps: true });
-const setImageUrl = function (doc) {
-    if (doc.image) {
-        const imageUrl = `${process.env.BASE_URL}/activities/${doc.image}`;
-        doc.image = imageUrl;
-    }
-};
-activitiesSchema.post("save", function (doc) {
-    setImageUrl(doc);
-});
-activitiesSchema.post("init", function (doc) {
-    setImageUrl(doc);
-});
-exports.activities = mongoose_1.default.model('Activities', activitiesSchema);
+// const setImageUrl=async function(doc:Special){
+//     if(doc.image){
+//         const imageUrl=await uploadImage(`./uploads/activities/${doc.image}`);
+//         doc.image=imageUrl
+//       }
+// }
+// activitiesSchema.post("save",async function(doc:Special){
+//   await  setImageUrl(doc)
+// });
+// activitiesSchema.post("init",async function(doc:Special){
+//    await  setImageUrl(doc)
+// });
+exports.activities = mongoose_1.default.model("Activities", activitiesSchema);

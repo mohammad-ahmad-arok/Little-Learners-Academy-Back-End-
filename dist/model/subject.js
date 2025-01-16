@@ -11,32 +11,33 @@ const subjectSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         minlength: 3,
-        maxlength: 50
+        maxlength: 50,
     },
     description: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
     },
     image: {
-        type: String,
-    }
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    },
 }, { timestamps: true });
-const setImageUrl = function (doc) {
-    if (doc.image) {
-        const imageUrl = `${process.env.BASE_URL}/subject/${doc.image}`;
-        doc.image = imageUrl;
-    }
-};
-// subjectSchema.pre(/^find/, function(next){
-//    this.select("-__v");
-//    next();
-// })
-subjectSchema.post("save", function (doc) {
-    setImageUrl(doc);
-});
-subjectSchema.post("init", function (doc) {
-    setImageUrl(doc);
-});
-exports.Subject = mongoose_1.default.model('Subject', subjectSchema);
+// const setImageUrl=async function(doc:Sub){
+//     if(doc.image){
+//         const imageUrl=await uploadImage(`./uploads/subject/${doc.image}`);
+//         doc.image=imageUrl
+//       }
+// }
+// subjectSchema.post("save",async function(doc:Sub){
+//      await setImageUrl(doc)
+// });
+// subjectSchema.post("init",async function(doc:Sub){
+//    await  setImageUrl(doc)
+// });
+exports.Subject = mongoose_1.default.model("Subject", subjectSchema);

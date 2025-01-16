@@ -2,12 +2,16 @@ import express from "express" ;
 
 import  multer from "multer";
 
+import uploadImage from "../middlewares/uploadImageMiddlware";
+
 import  {
    createSubjectValidator,
    getSubjectValidator,
    updateSubjectValidator,
    deleteSubjectValidator,
 } from "../utils/validator/subjectValidator";
+
+import {createEventValidator,getEventValidator,updateEventValidator,deleteEventValidator} from "../utils/validator/eventValidator"
 
 import {ApiError} from "../utils/ApiError"
 
@@ -46,12 +50,12 @@ export const eventsRouter = express.Router();
 eventsRouter
   .route("/")
   .get(getAllEvents)
-  .post(upload.single("image"), createSubjectValidator, createEvent);
+  .post(upload.single("image"),uploadImage("image"), createEventValidator, createEvent);
 
   eventsRouter
   .route("/:id")
-  .get(getSubjectValidator, getEvent)
-  .put(updateSubjectValidator, updateEvent)
-  .delete(deleteSubjectValidator, deleteEvent);
+  .get(getEventValidator, getEvent)
+  .put(upload.single("image"),uploadImage("image"), updateEventValidator, updateEvent)
+  .delete(deleteEventValidator, deleteEvent);
 
 

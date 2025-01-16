@@ -15,6 +15,7 @@ const subject_route_1 = require("./routes/subject.route");
 const room_route_1 = require("./routes/room.route");
 const activities_1 = require("./routes/activities");
 const events_1 = require("./routes/events");
+const authRoutes_1 = require("./routes/authRoutes");
 const teamRoutes_1 = __importDefault(require("./routes/teamRoutes")); // Import your routes
 const historyRoutes_1 = __importDefault(require("./routes/historyRoutes"));
 const awardRoutes_1 = __importDefault(require("./routes/awardRoutes"));
@@ -24,13 +25,18 @@ const TestimonialsRoutes_1 = require("./routes/TestimonialsRoutes");
 const BenefitRoutes_1 = require("./routes/BenefitRoutes");
 const messagesRoutes_1 = __importDefault(require("./routes/messagesRoutes"));
 const cors_1 = __importDefault(require("cors"));
-const ServicesRoutes_1 = __importDefault(require("./routes/ServicesRoutes")); // Routes for admission process, fee structure, and additional services
+const additionalServicesRoutes_1 = require("./routes/additionalServicesRoutes");
+const admissionProcessRoutes_1 = require("./routes/admissionProcessRoutes");
+const feeStructureRoutes_1 = require("./routes/feeStructureRoutes");
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT"],
 }));
-app.use('/team-members', teamRoutes_1.default); // All routes in teamRouter will now be prefixed with /team-members
+app.use("/api", authRoutes_1.authRouter);
+// All routes in teamRouter will now be prefixed with /team-members
+// app.use(Protect)
+app.use('/api/team-members', teamRoutes_1.default);
 app.use("/api/history", historyRoutes_1.default);
 app.use("/api/awards", awardRoutes_1.default);
 app.use("/api/mission-vision", missionVisionRoutes_1.default);
@@ -43,8 +49,9 @@ app.use("/api/rooms", room_route_1.roomRouter);
 app.use("/api/activities", activities_1.activitiesRouter);
 app.use("/api/events", events_1.eventsRouter);
 app.use("/api/message", messagesRoutes_1.default);
-app.use('/uploads/member', express_1.default.static(path_1.default.join(__dirname, 'uploads/member')));
-app.use('/api/general', ServicesRoutes_1.default);
+app.use('/api/admission-process', admissionProcessRoutes_1.admissionProcessesRouter);
+app.use('/api/additional-services', additionalServicesRoutes_1.additionalServicesRouter);
+app.use('/api/fee-structure', feeStructureRoutes_1.feeStructuresRouter);
 app.use(express_1.default.static(path_1.default.join(__dirname, "../uploads")));
 app.use(errorMiddleware_1.globalError);
 app.listen(process.env.PORT, () => {

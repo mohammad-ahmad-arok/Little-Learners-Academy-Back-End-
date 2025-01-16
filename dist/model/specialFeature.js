@@ -11,35 +11,37 @@ const specialFeatureSchema = new mongoose_1.default.Schema({
         required: true,
         unique: true,
         minlength: 3,
-        maxlength: 50
+        maxlength: 50,
     },
     description: {
         type: String,
         required: true,
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
     },
     image: {
-        type: String,
-    }
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    },
 }, { timestamps: true });
 // specialFeatureSchema.pre(/^find/, function(next){
 //    this.select("-__v");
 //    next();
 // })
-const setImageUrl = function (doc) {
-    if (doc.image) {
-        // console.log(doc.image)
-        const image = doc.image.split("\\\\");
-        console.log(image[4]);
-        const imageUrl = `${process.env.BASE_URL}/specialFeature/${doc.image}`;
-        doc.image = imageUrl;
-    }
-};
-specialFeatureSchema.post("save", function (doc) {
-    setImageUrl(doc);
-});
-specialFeatureSchema.post("init", function (doc) {
-    setImageUrl(doc);
-});
-exports.SpecialFeature = mongoose_1.default.model('Feature', specialFeatureSchema);
+// const setImageUrl=async function(doc:Special){
+//     if(doc.image){
+//         const imageUrl=await uploadImage(`./uploads/specialFeature/${doc.image}`);
+//         doc.image=imageUrl
+//       }
+// }
+// specialFeatureSchema.post("save",async function(doc:Special){
+//     await setImageUrl(doc)
+// });
+// specialFeatureSchema.post("init",async function(doc:Special){
+//    await setImageUrl(doc)
+// });
+exports.SpecialFeature = mongoose_1.default.model("Feature", specialFeatureSchema);

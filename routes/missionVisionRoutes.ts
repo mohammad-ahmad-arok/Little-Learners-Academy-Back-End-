@@ -6,6 +6,7 @@ import {
   updateMissionVision,
   deleteMissionVision,
 } from "../controller/missionVisionController";
+import { createMissionVisionValidator } from "../utils/validator/missionVisionValidator";
 
 const router = express.Router();
 
@@ -13,12 +14,12 @@ const router = express.Router();
 router.get("/", getMissionVision);
 
 // Create mission & vision
-router.post("/", createMissionVision);
+router.post("/",createMissionVisionValidator, createMissionVision);
 
 // Update mission & vision
-router.put("/", updateMissionVision);
+router.put("/:title", updateMissionVision);
 
 // Delete mission & vision
-router.delete("/", deleteMissionVision);
+router.delete("/:title", deleteMissionVision);
 
 export default router;

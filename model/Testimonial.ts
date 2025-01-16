@@ -1,4 +1,6 @@
 import mongoose, { Schema } from "mongoose";
+import { uploadImageCloudinary } from "../utils/cloudinary";
+import path from "path";
 
 interface TestimonialDocument {
   name: string;
@@ -6,7 +8,7 @@ interface TestimonialDocument {
   image: string;
   evaluation: number;
 }
-const testimonialSchema:Schema = new mongoose.Schema(
+const testimonialSchema: Schema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -17,7 +19,12 @@ const testimonialSchema:Schema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: String,
+      url: {
+        type: String,
+      },
+      public_id: {
+        type: String,
+      },
     },
     evaluation: {
       type: Number,
@@ -27,20 +34,7 @@ const testimonialSchema:Schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const setImageUrl=function(doc:TestimonialDocument){
-  if(doc.image){
-      const imageUrl=`${process.env.BASE_URL}/Testimonial/${doc.image}`;
-      doc.image=imageUrl
-    }
-}
-
-
-testimonialSchema.post("save",function(doc:TestimonialDocument){
-  setImageUrl(doc)
-});
-
-testimonialSchema.post("init",function(doc:TestimonialDocument){
-  setImageUrl(doc)
-});
-
-export const Testimonial = mongoose.model<TestimonialDocument>("Testimonial", testimonialSchema);
+export const Testimonial = mongoose.model<TestimonialDocument>(
+  "Testimonial",
+  testimonialSchema
+);

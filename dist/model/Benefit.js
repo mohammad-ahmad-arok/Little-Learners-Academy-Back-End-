@@ -15,8 +15,24 @@ const BenefitSchema = new mongoose_1.default.Schema({
         required: true,
     },
     icon: {
-        type: String,
-        required: true,
-    }
+        url: {
+            type: String,
+        },
+        public_id: {
+            type: String,
+        }
+    },
 }, { timestamps: true });
+// const setImageUrl = async function (doc: FeatureDocument) {
+//   if (doc.icon) {
+//     const imageUrl = await uploadImage(`./uploads/subject/${doc.icon}`);
+//     doc.icon = imageUrl;
+//   }
+// };
+// BenefitSchema.post("save", async function (doc: FeatureDocument) {
+//   await setImageUrl(doc);
+// });
+// BenefitSchema.post("init", async function (doc: FeatureDocument) {
+//   await setImageUrl(doc);
+// });
 exports.Benefit = mongoose_1.default.model("Benefit", BenefitSchema);

@@ -32,5 +32,10 @@ exports.roomRouter
 exports.roomRouter
     .route("/:id")
     .get(roomValidator_1.getRoomValidator, room_controller_1.getRoom)
-    .put(roomValidator_1.updateRoomValidator, room_controller_1.updateRoom)
+    .put(upload.fields([
+    {
+        name: "images",
+        maxCount: 10
+    }
+]), room_controller_1.processImages, roomValidator_1.updateRoomValidator, room_controller_1.updateRoom)
     .delete(roomValidator_1.deleteRoomValidator, room_controller_1.deleteRoom);

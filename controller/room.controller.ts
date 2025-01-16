@@ -3,7 +3,14 @@ import sharp from "sharp";
 
 import asyncHandler from "express-async-handler";
 
-import { ApiFeatures } from "../utils/ApiFeatures";
+import { uploadImageCloudinary } from "../utils/cloudinary";
+import {
+  createOne,
+  deleteOne,
+  getAll,
+  getOne,
+  updateOne,
+} from "./FactoryHandlers";
 
 export const processImages = asyncHandler(
   async (req: any, res: any, next: any) => {
@@ -18,7 +25,15 @@ export const processImages = asyncHandler(
             .toFormat("jpeg")
             .jpeg({ quality: 100 })
             .toFile(`uploads/room/${filename}`);
-          req.body.images.push(filename);
+          const result = await uploadImageCloudinary(
+            `./uploads/room/${filename}`
+          );
+          // fs.unlinkSync(path.join(__dirname,`/uploads/room/${filename}`));
+
+          req.body.images.push({
+            url: result.secure_url,
+            public_id: result.public_id,
+          });
         })
       );
     }
@@ -26,49 +41,12 @@ export const processImages = asyncHandler(
   }
 );
 
-export const getAllRooms = asyncHandler(async (req: any, res: any) => {
-  const countDocuments = await Room.countDocuments();
-  const feature = new ApiFeatures(Room.find({}), req.query);
+export const getAllRooms = getAll(Room);
 
-  feature.Paginate(countDocuments).Filter();
+export const createRoom = createOne(Room);
 
-  const { mongooseQuery, pagination } = feature;
+export const getRoom = getOne(Room);
 
-  const rooms = await mongooseQuery;
+export const updateRoom = updateOne(Room);
 
-  res.status(200).json({ status: "Success", pagination, data: rooms });
-});
-
-export const createRoom = asyncHandler(async (req: any, res: any) => {
-  const room = await Room.create(req.body);
-  res.status(201).json({ status: "Success", data: room });
-});
-
-export const getRoom = asyncHandler(async (req: any, res: any) => {
-  const { id } = req.params;
-  const room = await Room.findById(id);
-  if (!room) {
-    return res.status(404).json({ status: "fail", message: "room not found" });
-  }
-  res.status(200).json({ status: "Success", data: room });
-});
-
-export const updateRoom = asyncHandler(async (req: any, res: any) => {
-  const { id } = req.params;
-  const room = await Room.findByIdAndUpdate(id, req.body, { new: true });
-  if (!room) {
-    return res.status(404).json({ status: "fail", message: "room not found" });
-  }
-  res.status(200).json({ status: "Success", data: room });
-});
-
-export const deleteRoom = asyncHandler(async (req: any, res: any) => {
-  const { id } = req.params;
-  const room = await Room.findByIdAndDelete(id);
-  if (!room) {
-    return res.status(404).json({ status: "fail", message: "room not found" });
-  }
-  res
-    .status(200)
-    .json({ status: "Success", message: "room deleted successfully" });
-});
+export const deleteRoom = deleteOne(Room);
