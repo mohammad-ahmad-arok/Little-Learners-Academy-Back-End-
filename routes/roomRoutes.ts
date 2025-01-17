@@ -31,7 +31,7 @@ import {
   updateRoom,
   deleteRoom,
   processImages
-}  from "../controller/room.controller" ;
+}  from "../controller/roomController" ;
 
 export const roomRouter = express.Router();
 

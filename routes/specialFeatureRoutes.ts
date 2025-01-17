@@ -40,7 +40,7 @@ import   {
   getFeature,
   updateFeature,
   deleteFeature,
-} from "../controller/specialFeature.controller" ;
+} from "../controller/specialFeatureController" ;
 
 export const specialFeaturesRouter = express.Router();
 

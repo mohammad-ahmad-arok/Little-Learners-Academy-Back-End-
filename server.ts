@@ -9,9 +9,9 @@ import {connectDB} from "./DB/connectDb"
 import path from "path"
 
 
-import  {specialFeaturesRouter} from "./routes/specialFeature.route"
-import {subjectRouter} from "./routes/subject.route"
-import {roomRouter} from "./routes/room.route"
+import  {specialFeaturesRouter} from "./routes/specialFeatureRoutes"
+import {subjectRouter} from "./routes/subjectRoutes"
+import {roomRouter} from "./routes/roomRoutes"
 
 import  {activitiesRouter} from "./routes/activities"
 import {eventsRouter} from "./routes/events"
@@ -34,6 +34,8 @@ import { additionalServicesRouter } from "./routes/additionalServicesRoutes";
 import { admissionProcessesRouter } from "./routes/admissionProcessRoutes";
 
 import { feeStructuresRouter } from "./routes/feeStructureRoutes";
+
+import {StudentSupportRouter} from "./routes/studentSupportRoutes"
 
 import {Protect} from "./controller/authController"
 
@@ -69,6 +71,7 @@ app.use("/api/message", messagesRouter);
 app.use('/api/admission-process', admissionProcessesRouter);
 app.use('/api/additional-services', additionalServicesRouter);
 app.use('/api/fee-structure', feeStructuresRouter);
+app.use('/api/student-support', StudentSupportRouter);
 
 
 

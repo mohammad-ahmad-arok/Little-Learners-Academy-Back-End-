@@ -41,7 +41,7 @@ import  {
   createSubject,
   updateSubject,
   deleteSubject,
-} from  "../controller/subject.controller";
+} from  "../controller/subjectController";
 
 export const subjectRouter = express.Router();
 

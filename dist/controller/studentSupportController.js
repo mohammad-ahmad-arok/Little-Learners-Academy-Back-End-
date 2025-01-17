@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteStudentSupport = exports.updateStudentSupport = exports.createStudentSupport = exports.getStudentSupport = exports.getStudentSupports = void 0;
+const StudentSupport_1 = require("../model/StudentSupport");
+const FactoryHandlers_1 = require("./FactoryHandlers");
+exports.getStudentSupports = (0, FactoryHandlers_1.getAll)(StudentSupport_1.StudentSupport);
+exports.getStudentSupport = (0, FactoryHandlers_1.getOne)(StudentSupport_1.StudentSupport);
+exports.createStudentSupport = (0, FactoryHandlers_1.createOne)(StudentSupport_1.StudentSupport);
+exports.updateStudentSupport = (0, FactoryHandlers_1.updateOne)(StudentSupport_1.StudentSupport);
+exports.deleteStudentSupport = (0, FactoryHandlers_1.deleteOne)(StudentSupport_1.StudentSupport);

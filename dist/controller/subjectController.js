@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteSubject = exports.updateSubject = exports.getSubject = exports.createSubject = exports.getAllSubjects = void 0;
+const subject_1 = require("../model/subject");
+const FactoryHandlers_1 = require("./FactoryHandlers");
+exports.getAllSubjects = (0, FactoryHandlers_1.getAll)(subject_1.Subject);
+exports.createSubject = (0, FactoryHandlers_1.createOne)(subject_1.Subject);
+exports.getSubject = (0, FactoryHandlers_1.getOne)(subject_1.Subject);
+exports.updateSubject = (0, FactoryHandlers_1.updateOne)(subject_1.Subject);
+exports.deleteSubject = (0, FactoryHandlers_1.deleteOne)(subject_1.Subject);
