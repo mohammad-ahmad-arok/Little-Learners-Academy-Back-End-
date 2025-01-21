@@ -36,9 +36,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // models/Award.ts
 const mongoose_1 = __importStar(require("mongoose"));
 const AwardSchema = new mongoose_1.Schema({
-    title: { type: String, required: true },
+    name: { type: String, required: true },
     description: { type: String, required: true },
-    icon: {
+    image: {
         url: {
             type: String,
         },

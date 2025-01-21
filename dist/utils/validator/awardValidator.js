@@ -4,11 +4,11 @@ exports.deleteAwardValidator = exports.updateAwardValidator = exports.getAwardVa
 const express_validator_1 = require("express-validator");
 const validatorMiddleware_1 = require("../../middlewares/validatorMiddleware");
 exports.createAwardValidator = [
-    (0, express_validator_1.check)("title")
+    (0, express_validator_1.check)("name")
         .notEmpty()
-        .withMessage("title required")
+        .withMessage("name required")
         .isLength({ min: 3 })
-        .withMessage("Too Short title")
+        .withMessage("Too Short name")
         .isLength({ max: 20 })
         .withMessage("Too Long title"),
     (0, express_validator_1.check)("description")

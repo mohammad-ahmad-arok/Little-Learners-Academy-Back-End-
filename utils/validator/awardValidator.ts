@@ -3,9 +3,9 @@ import  {ValidatorMiddle}  from"../../middlewares/validatorMiddleware";
 export const createAwardValidator = [
   check("name")
     .notEmpty()
-    .withMessage("title required")
+    .withMessage("name required")
     .isLength({ min: 3 })
-    .withMessage("Too Short title")
+    .withMessage("Too Short name")
     .isLength({ max: 20 })
     .withMessage("Too Long title")
     ,
