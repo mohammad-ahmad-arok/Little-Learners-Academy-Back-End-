@@ -4,16 +4,16 @@ import mongoose, { Schema, Document } from "mongoose";
 import { uploadImageCloudinary } from "../utils/cloudinary";
 
 interface IAward extends Document {
-  title: string; // e.g. "Outstanding Early Childhood Education Award"
+  name: string; // e.g. "Outstanding Early Childhood Education Award"
   description: string; // e.g. "Presented by the National Association for the Education of Young Children..."
-  icon: string; // URL or path to an icon representing the award
+  image: string; // URL or path to an icon representing the award
 }
 
 const AwardSchema: Schema = new Schema(
   {
-    title: { type: String, required: true },
+    name: { type: String, required: true },
     description: { type: String, required: true },
-    icon: {
+    image: {
       url: {
         type: String,
       },

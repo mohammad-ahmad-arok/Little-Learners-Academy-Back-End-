@@ -1,7 +1,7 @@
 import { check }  from"express-validator";
 import  {ValidatorMiddle}  from"../../middlewares/validatorMiddleware";
 export const createAwardValidator = [
-  check("title")
+  check("name")
     .notEmpty()
     .withMessage("title required")
     .isLength({ min: 3 })
